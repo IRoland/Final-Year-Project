@@ -1,0 +1,54 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.finalproject.MainActivity" >
+
+    <Button
+        android:id="@+id/bSubmit"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etPass"
+        android:layout_below="@+id/etPass"
+        android:layout_marginTop="14dp"
+        android:text="@string/bSubmit" />
+
+    <EditText
+        android:id="@+id/etPass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etUser"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        android:ems="10"
+        android:hint="@string/etPass"
+        android:inputType="textPersonName|none" />
+
+    <EditText
+        android:id="@+id/etUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etPass"
+        android:layout_alignRight="@+id/etPass"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="144dp"
+        android:ems="10"
+        android:hint="@string/etUser"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/etUser"
+        android:layout_alignLeft="@+id/etUser"
+        android:layout_marginBottom="48dp"
+        android:text="@string/SignUp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</RelativeLayout>
