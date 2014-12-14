@@ -85,7 +85,7 @@ private class LongOperation extends AsyncTask<String, Void, String> {
 	      
 	                try {
 	                  httpclient = new DefaultHttpClient();
-	       	          httppost = new HttpPost("http://10.0.2.2:1234/FinalYearApp/index.php");
+	       	          httppost = new HttpPost("http://10.0.2.2:1234/webservice/index2.php");
 	       	          ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 	       	          postParameters.add(new BasicNameValuePair("username", etUser.getText().toString()));
 	       	          postParameters.add(new BasicNameValuePair("password", etPass.getText().toString()));
