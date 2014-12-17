@@ -33,13 +33,13 @@ public final class R {
     public static final class id {
         public static final int action_settings=0x7f08000f;
         public static final int bReg=0x7f080002;
+        public static final int bRegister=0x7f08000e;
         public static final int bSubmit=0x7f080004;
         public static final int etEmail=0x7f08000a;
         public static final int etFirstName=0x7f080008;
         public static final int etPass=0x7f080000;
         public static final int etPassword=0x7f08000c;
         public static final int etPasswordConfirm=0x7f08000d;
-        public static final int etRegister=0x7f08000e;
         public static final int etSecondName=0x7f080009;
         public static final int etUser=0x7f080001;
         public static final int etUsername=0x7f08000b;

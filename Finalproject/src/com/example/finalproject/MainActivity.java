@@ -22,13 +22,16 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener{
 	
+	//Text Fields 
 	private EditText user, pass;
+	
+	//Buttons
 	private Button bSubmit, bReg;
 	
-	 // Progress Dialog
+	//Progress Dialog
     private ProgressDialog pDialog;
  
-    // JSON parser class
+    //JSON parser class
     JSONParser jsonParser = new JSONParser();
     
     //php login script location:
@@ -36,7 +39,6 @@ public class MainActivity extends Activity implements OnClickListener{
   
     //To testing on your device
     //Put your local ip instead,
-   // Private static final String LOGIN_URL = "http://xxx.xxx.x.x:1234/webservice/login.php";
     
     //testing on Emulator:
     private static final String LOGIN_URL = "http://10.0.2.2:1234/webservice/index2.php";
@@ -50,7 +52,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+	
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
@@ -69,9 +71,9 @@ public class MainActivity extends Activity implements OnClickListener{
 		
 	}
 
+	//When a certain button is pressed 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 				switch (v.getId()) {
 				case R.id.bSubmit:
 						new AttemptLogin().execute();
@@ -84,6 +86,8 @@ public class MainActivity extends Activity implements OnClickListener{
 				}
 	}
 	
+
+	//Login In Page
 	class AttemptLogin extends AsyncTask<String, String, String> {
 
 		 /**
@@ -95,7 +99,7 @@ public class MainActivity extends Activity implements OnClickListener{
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(MainActivity.this);
-            pDialog.setMessage("Attempting login...");
+            pDialog.setMessage("Attempting To Login...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();
@@ -103,7 +107,7 @@ public class MainActivity extends Activity implements OnClickListener{
 		
 		@Override
 		protected String doInBackground(String... args) {
-			// TODO Auto-generated method stub
+			
 			 // Check for success tag
             int success;
             String username = user.getText().toString();
