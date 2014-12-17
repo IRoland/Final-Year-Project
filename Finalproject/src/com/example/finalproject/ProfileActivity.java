@@ -3,12 +3,12 @@ package com.example.finalproject;
 import android.app.Activity;
 import android.os.Bundle;
 
-public class Profile extends Activity{
+public class ProfileActivity extends Activity{
 
 	 @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.profile);
+		setContentView(R.layout.activity_profile);
 	}
 }

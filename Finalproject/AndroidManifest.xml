@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,13 +27,13 @@
         <!-- Declared Activities -->
         
         <activity
-            android:name="com.example.finalproject.Profile"
+            android:name="com.example.finalproject.ProfileActivity"
             android:label="@string/app_name" >
         </activity>
         
         
          <activity
-            android:name="com.example.finalproject.Register"
+            android:name="com.example.finalproject.RegisterActivity"
             android:label="@string/app_name" >
         </activity>
         
