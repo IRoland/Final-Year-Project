@@ -8,6 +8,17 @@
     <string name="bSubmit">Login</string>
     <string name="etPass">Password</string>
     <string name="etUser">Username</string>
-    <string name="SignUp">Not Yet a Member ? SIGN UP</string>
-
+    <string name="you_made_it">You Made It</string>
+    <string name="f">Sign Up</string>
+    <string name="text1">Not Yet a Member ?</string>
+    <string name="text2">Forgot Password ?</string>
+    <string name="Fname">First Name</string>
+    <string name="Sname">Second Name</string>
+    <string name="Email">Email</string>
+    <string name="Username">Username</string>
+    <string name="Password">Password</string>
+    <string name="PasswordConfirm">Retype Password</string>
+     <string name="Register">Register</string>
+     
+    
 </resources>

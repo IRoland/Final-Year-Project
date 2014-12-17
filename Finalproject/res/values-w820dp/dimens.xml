@@ -5,6 +5,9 @@
          (such as screen margins) for screens with more than 820dp of available width. This
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively).
     -->
-    <dimen name="activity_horizontal_margin">64dp</dimen>
+     <dimen name="activity_horizontal_margin">200dp</dimen>
+    <dimen name="activity_vertical_margin">200dp</dimen>
+    
+    <dimen name="activity_Top_margin">10dp</dimen>
 
 </resources>

@@ -8,16 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.finalproject.MainActivity" >
 
-    <Button
-        android:id="@+id/bSubmit"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/etPass"
-        android:layout_below="@+id/etPass"
-        android:layout_marginTop="14dp"
-        android:text="@string/bSubmit" />
-
     <EditText
         android:id="@+id/etPass"
         android:layout_width="wrap_content"
@@ -41,14 +31,48 @@
         android:hint="@string/etUser"
         android:inputType="textPersonName" />
 
+    <Button
+        android:id="@+id/bReg"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/etUser"
+        android:layout_marginBottom="50dp"
+        android:layout_marginLeft="4dp"
+        android:layout_toRightOf="@+id/textView1"
+        android:background="@null"
+        android:text="@string/f" />
+
+    <Button
+        android:id="@+id/bSubmit"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etPass"
+        android:layout_below="@+id/etPass"
+        android:background="@null"
+        android:text="@string/bSubmit" />
+
+    <Button
+        android:id="@+id/forPass"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/bSubmit"
+        android:layout_alignBottom="@+id/bSubmit"
+        android:layout_alignRight="@+id/etPass"
+        android:background="@null"
+        android:text="@string/text2" />
+
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/etUser"
+        android:layout_alignBaseline="@+id/bReg"
+        android:layout_alignBottom="@+id/bReg"
         android:layout_alignLeft="@+id/etUser"
-        android:layout_marginBottom="48dp"
-        android:text="@string/SignUp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_marginLeft="14dp"
+        android:text="@string/text1"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

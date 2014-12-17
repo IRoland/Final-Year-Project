@@ -23,6 +23,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <!-- Declared Activities -->
+        
+        <activity
+            android:name="com.example.finalproject.Profile"
+            android:label="@string/app_name" >
+        </activity>
+        
+        
+         <activity
+            android:name="com.example.finalproject.Register"
+            android:label="@string/app_name" >
+        </activity>
+        
     </application>
 
 </manifest>
