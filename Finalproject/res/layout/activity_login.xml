@@ -74,5 +74,6 @@
         android:layout_marginLeft="14dp"
         android:text="@string/text1"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+    
 
 </RelativeLayout>

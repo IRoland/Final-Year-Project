@@ -34,9 +34,10 @@ public class RegisterActivity extends Activity implements OnClickListener{
     //JSON parser class
     JSONParser jsonParser = new JSONParser();
     
+    //When testing on GenyMotion Use ip : private static final String LOGIN_URL = "http://192.168.56.1:1234/webservice/index2.php"
+    //When using emulator use : private static final String LOGIN_URL = "http://10.0.2.2:1234/webservice/index2.php"
     //testing on Emulator:
-    private static final String LOGIN_URL = "http://10.0.2.2:1234/webservice/register.php";
-
+    private static final String LOGIN_URL = "http://192.168.56.1:1234/webservice/register.php";
     
     //JSON element ids from repsonse of php script:
     private static final String TAG_SUCCESS = "success";
@@ -46,7 +47,7 @@ public class RegisterActivity extends Activity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 	
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_register); //Iffy here
+		setContentView(R.layout.activity_register);
 		
 		//setup input fields
 		firstname 	= (EditText)findViewById(R.id.etFirstName);
@@ -85,6 +86,12 @@ public class RegisterActivity extends Activity implements OnClickListener{
          * Before starting background thread Show Progress Dialog
          * */
 		boolean failure = false;
+		private String passwordconfirm;
+		private String username;
+		private String password;
+		private String Email;
+		private String sname;
+		private String fname;
 		
         @Override
         protected void onPreExecute() {        
@@ -95,17 +102,25 @@ public class RegisterActivity extends Activity implements OnClickListener{
             pDialog.show();
         }
 		
+        
 		@Override
 		protected String doInBackground(String... args) {
 			
 			 // Check for success tag
             int success;
-            String fname = firstname.getText().toString();
-            String sname = secondname.getText().toString();
-            String Email = email.getText().toString();
-            String password = pass.getText().toString();
-            String username = user.getText().toString();
-            String passwordconfirm = passconfirm.getText().toString();
+            fname = firstname.getText().toString();
+            sname = secondname.getText().toString();
+            Email = email.getText().toString();
+            password = pass.getText().toString();
+            username = user.getText().toString();
+            passwordconfirm = passconfirm.getText().toString();
+            
+            String error = areDetailsValid();
+            
+            if(!error.isEmpty()){
+            	return error;
+            }
+            
             
             try {
                 // Building Parameters
@@ -144,6 +159,72 @@ public class RegisterActivity extends Activity implements OnClickListener{
             return null;
 			
 		}
+		
+		private String areDetailsValid() {
+			
+			if(!isStringValid(fname)){
+            	return "First name is not valid";
+            }
+            else if(!isStringValid(sname)){
+            	return "Second name is not valid";
+            }
+            else if(!isEmailValid(Email)){
+            	return "Email is not valid";
+            }
+            else if(!isStringValid(username)){
+            	return "Username is not valid";
+            }
+            else if(!isPasswordValid(password)){
+            	return "Password is not valid";
+            }
+            else if(!isPasswordValid(passwordconfirm)){
+            	return "Passwords don't match";
+            }
+			// Although Php checks for this, checking here
+			// provides an instant feedback to user
+            else if(!password.equals(passwordconfirm)){
+            	return "Passwords don't match";
+            }
+			return "";
+		}
+
+
+		private boolean isStringValid(String string) {
+			if(string.isEmpty()){
+				return false;
+			}
+			return true;
+		}
+		
+		private boolean isPasswordValid(String password) {
+			if(password.length()<=3){
+				return false;
+			}
+			//Checks that only these Characters appear (*) No limit 
+			else if(!password.matches("[A-Za-z0-9]*")){
+				return false;
+			}
+			//Checks for at least one uppercase letter
+			else if(password.equals(password.toLowerCase())){
+				return false;
+			}
+			return true;
+		}
+
+		private boolean isEmailValid(String email) {
+			//   [] = Match whatever is inside  
+			//    * = Any number of times  
+			//    . = Anything    
+			//  \\. = Backspace makes it find a dot - Escapes
+
+			if(email.matches("[A-Za-z0-9._]+@[A-Za-z]+\\.[A-Za-z]+")){
+				return true;
+			}
+			
+			return false;
+		}
+
+
 		/**
          * After completing background task Dismiss the progress dialog
          * **/

@@ -41,9 +41,12 @@ public class LoginActivity extends Activity implements OnClickListener{
     //Put your local ip instead,
     
     //testing on Emulator:
-    private static final String LOGIN_URL = "http://10.0.2.2:1234/webservice/index2.php";
+    //When testing on GenyMotion Use ip : private static final String LOGIN_URL = "http://192.168.56.1:1234/webservice/index2.php"
+    //When using emulator use : private static final String LOGIN_URL = "http://10.0.2.2:1234/webservice/index2.php"
+    private static final String LOGIN_URL = "http://192.168.56.1:1234/webservice/index2.php";
     
-  //testing from a real server:
+   
+    //testing from a real server:
     //private static final String LOGIN_URL = "http://www.yourdomain.com/webservice/login.php";
     
     //JSON element ids from repsonse of php script:
@@ -130,8 +133,11 @@ public class LoginActivity extends Activity implements OnClickListener{
                 success = json.getInt(TAG_SUCCESS);
                 if (success == 1) {
                 	Log.d("Login Successful!", json.toString());
-                	Intent i = new Intent(LoginActivity.this, ProfileActivity.class);
-    				startActivity(i);
+                	Intent profile = new Intent(LoginActivity.this, ProfileActivity.class);
+                	//
+                	profile.putExtra("Username", username );
+    				startActivity(profile);
+    				
                 	return json.getString(TAG_MESSAGE);
                 }else{
                 	Log.d("Login Failure!", json.getString(TAG_MESSAGE));

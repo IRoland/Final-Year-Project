@@ -18,7 +18,12 @@
     <string name="Username">Username</string>
     <string name="Password">Password</string>
     <string name="PasswordConfirm">Retype Password</string>
-     <string name="Register">Register</string>
+    <string name="Register">Register</string>
+    <string name="Title">Title</string>
+    <string name="Question">Type question here</string>
+    <string name="bAskGroup">Ask Group</string>
+    <string name="bAskPublic">Ask Public</string>
+    
      
     
 </resources>
