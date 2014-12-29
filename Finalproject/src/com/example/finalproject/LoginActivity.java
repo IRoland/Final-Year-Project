@@ -72,6 +72,12 @@ public class LoginActivity extends Activity implements OnClickListener{
 		bSubmit.setOnClickListener(this);
 		bReg.setOnClickListener(this);
 		
+		
+		//Just For Quick LOGIN for Testing REMOVE LATER
+		user.setText("Admin");
+		pass.setText("Pass");
+	
+		
 	}
 
 	//When a certain button is pressed 

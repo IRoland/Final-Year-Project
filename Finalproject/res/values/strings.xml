@@ -24,6 +24,16 @@
     <string name="bAskGroup">Ask Group</string>
     <string name="bAskPublic">Ask Public</string>
     
+    <string name="spinner_title">Select Category</string>
+    <string-array name="category_array">
+	        <item>Arts</item>
+	        <item>Business</item>
+	        <item>Computing</item>
+	        <item>Engineering</item>
+	        <item>Medicine</item>
+	        <item>Sciences</item>
+    </string-array>
+    
      
     
 </resources>
