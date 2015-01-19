@@ -1,8 +1,13 @@
 package com.example.finalproject;
  
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
+
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -10,8 +15,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.provider.MediaStore.MediaColumns;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,6 +35,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,8 +48,11 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 	//Text Views
 	private TextView firstname,secondname;
 	
+	//Image Views
+	private ImageView profilepic;
+	
 	//Buttons
-	private Button bAskGroup, bAskPublic;
+	private Button bAskGroup, bAskPublic, Profilebtn;
 	
 	//Spinner
 	private Spinner spinner;
@@ -65,6 +84,10 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
     //JSON element ids from repsonse of php script:
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_MESSAGE = "message";
+
+   //For use with the camera
+	protected static final int SELECT_FILE = 0;
+	protected static final int REQUEST_CAMERA = 0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,21 +103,23 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 		firstname = (TextView)findViewById(R.id.tvFirstnameProfile);
 		secondname = (TextView)findViewById(R.id.tvSecondnameProfile);
 		
-		// Spinner element
+		//Picture
+		profilepic = (ImageView)findViewById(R.id.ivProfilePic);
 		
+		// Spinner element
         spinner = (Spinner) findViewById(R.id.spinner1);
- 
-        
 		
 		//setup buttons
 		bAskGroup = (Button)findViewById(R.id.bAskGroup);
 		bAskPublic = (Button)findViewById(R.id.bAskPublic);
+		Profilebtn = (Button)findViewById(R.id.Profilebtn);
 
 		
 		//listeners
 		bAskGroup.setOnClickListener(this);
 		bAskPublic.setOnClickListener(this);
         spinner.setOnItemSelectedListener(this);
+        Profilebtn.setOnClickListener(this);
 		
 		
 		//Pass username from Login
@@ -130,7 +155,10 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 					break;
 				case R.id.bAskPublic:
 					new PostPublic().execute();
-				break;
+					break;
+				case R.id.Profilebtn:
+					selectImage();
+					break;
 			default:
 				}
 	}
@@ -199,10 +227,109 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 
 	}
 
-
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
 			
 	}
+	
+	//Select How to set image
+	private void selectImage() {
+		final CharSequence[] items = { "Take Photo", "Choose from Library",
+				"Cancel" };
+		
+		//Creates an Alert with options
+		AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+		builder.setTitle("Add Photo");
+		builder.setItems(items, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int item) {
+				if (items[item].equals("Take Photo")) {
+					Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+					File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+					intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+					startActivityForResult(intent, REQUEST_CAMERA);
+					
+				} else if (items[item].equals("Choose from Library")) {
+					Intent intent = new Intent(
+							Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+					intent.setType("image/*");
+					startActivityForResult(
+							Intent.createChooser(intent, "Select File"),
+							SELECT_FILE);
+				} else if (items[item].equals("Cancel")) {
+					dialog.dismiss();
+				}
+			}
+		});
+		builder.show();
+	}
+	
+	////////////////////
+	
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == RESULT_OK) {
+			if (requestCode == REQUEST_CAMERA) {
+				File f = new File(Environment.getExternalStorageDirectory()
+						.toString());
+				for (File temp : f.listFiles()) {
+					if (temp.getName().equals("temp.jpg")) {
+						f = temp;
+						break;
+					}
+				}
+				try {
+					Bitmap bm;
+					BitmapFactory.Options btmapOptions = new BitmapFactory.Options();
+
+					bm = BitmapFactory.decodeFile(f.getAbsolutePath(),
+							btmapOptions);
+
+					// bm = Bitmap.createScaledBitmap(bm, 70, 70, true);
+					profilepic.setImageBitmap(bm);
+
+					String path = android.os.Environment
+							.getExternalStorageDirectory() + File.separator + "Phoenix" + File.separator + "default";
+					f.delete();
+					OutputStream fOut = null;
+					File file = new File(path, String.valueOf(System
+							.currentTimeMillis()) + ".jpg");
+					try {
+						fOut = new FileOutputStream(file);
+						bm.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
+						fOut.flush();
+						fOut.close();
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else if (requestCode == SELECT_FILE) {
+				Uri selectedImageUri = data.getData();
+
+				String tempPath = getPath(selectedImageUri, ProfileActivity.this);
+				Bitmap bm;
+				BitmapFactory.Options btmapOptions = new BitmapFactory.Options();
+				bm = BitmapFactory.decodeFile(tempPath, btmapOptions);
+				profilepic.setImageBitmap(bm);
+			}
+		}
+	}
+	
+	public String getPath(Uri uri, Activity activity) {
+		String[] projection = { MediaColumns.DATA };
+		Cursor cursor = activity.managedQuery(uri, projection, null, null, null);
+		int column_index = cursor.getColumnIndexOrThrow(MediaColumns.DATA);
+		cursor.moveToFirst();
+		return cursor.getString(column_index);
+	}
+	
 		 
 }
