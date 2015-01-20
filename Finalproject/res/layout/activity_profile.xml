@@ -14,7 +14,6 @@
     android:orientation="vertical" >
 
     
-    
   	<LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
@@ -38,9 +37,7 @@
   		android:background="@null"
   		android:layout_width="80dp"
   	    android:layout_height="80dp" />
-        
-   
-     
+
      </RelativeLayout>
     
       <LinearLayout
@@ -61,19 +58,25 @@
 	        android:textSize="18sp" />
 
     	</LinearLayout>
+    	
+      
+      
     </LinearLayout>
-
+     
+  	 <Spinner
+          android:id="@+id/sCategorySelector"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:entries="@array/category_array" />
+   
   	<EditText
   	    android:id="@+id/etTitle"
-  	    android:layout_width="wrap_content"
+  	    android:layout_width="match_parent"
   	    android:layout_height="wrap_content"
-		android:hint="@string/Title" >
-
-  	 
+		android:hint="@string/Title" >  	 
   	</EditText>
   	
-  	
-   
+
         <EditText
             android:id="@+id/etQuestion"
             android:layout_width="match_parent"
@@ -111,11 +114,6 @@
         
     </LinearLayout>
 
-      <Spinner
-          android:id="@+id/spinner1"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:entries="@array/category_array" />
     
 </LinearLayout>
 

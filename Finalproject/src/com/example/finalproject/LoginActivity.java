@@ -43,7 +43,7 @@ public class LoginActivity extends Activity implements OnClickListener{
     //testing on Emulator:
     //When testing on GenyMotion Use ip : private static final String LOGIN_URL = "http://192.168.56.1:1234/webservice/index2.php"
     //When using emulator use : private static final String LOGIN_URL = "http://10.0.2.2:1234/webservice/index2.php"
-    private static final String LOGIN_URL = "http://192.168.56.1:1234/webservice/index2.php";
+    private static final String LOGIN_URL = "http://192.168.56.1:1234/FinalYearApp/index.php";
     
    
     //testing from a real server:

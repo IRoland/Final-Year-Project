@@ -75,17 +75,17 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
     //testing on Emulator:
     //When testing on GenyMotion Use ip : private static final String LOGIN_URL = "http://192.168.56.1:1234/webservice/index2.php"
     //When using emulator use : private static final String LOGIN_URL = "http://10.0.2.2:1234/webservice/index2.php"
-    private static final String LOGIN_URL = "http://192.168.56.1:1234/webservice/addQuestion.php";
+    private static final String LOGIN_URL = "http://192.168.56.1:1234/FinalYearApp/addQuestion.php";
     
    
     //testing from a real server:
     //private static final String LOGIN_URL = "http://www.yourdomain.com/webservice/login.php";
     
-    //JSON element ids from repsonse of php script:
+    // JSON element ids from repsonse of php script:
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_MESSAGE = "message";
 
-   //For use with the camera
+   // For use with the camera
 	protected static final int SELECT_FILE = 0;
 	protected static final int REQUEST_CAMERA = 0;
 	
@@ -95,34 +95,34 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
 		
-		//setup input fields
-		question = (EditText)findViewById(R.id.etQuestion);
-		title = (EditText)findViewById(R.id.etTitle);
+		// setup input fields
+		question   = (EditText) findViewById(R.id.etQuestion);
+		title      = (EditText) findViewById(R.id.etTitle);
 		
-		//Names
-		firstname = (TextView)findViewById(R.id.tvFirstnameProfile);
-		secondname = (TextView)findViewById(R.id.tvSecondnameProfile);
+		// Names
+		firstname  = (TextView) findViewById(R.id.tvFirstnameProfile);
+		secondname = (TextView) findViewById(R.id.tvSecondnameProfile);
 		
-		//Picture
-		profilepic = (ImageView)findViewById(R.id.ivProfilePic);
+		// Picture
+		profilepic = (ImageView) findViewById(R.id.ivProfilePic);
 		
 		// Spinner element
-        spinner = (Spinner) findViewById(R.id.spinner1);
+        spinner    = (Spinner) findViewById(R.id.sCategorySelector);
 		
-		//setup buttons
-		bAskGroup = (Button)findViewById(R.id.bAskGroup);
-		bAskPublic = (Button)findViewById(R.id.bAskPublic);
-		Profilebtn = (Button)findViewById(R.id.Profilebtn);
+		// setup buttons
+		bAskGroup  = (Button) findViewById(R.id.bAskGroup);
+		bAskPublic = (Button) findViewById(R.id.bAskPublic);
+		Profilebtn = (Button) findViewById(R.id.Profilebtn);
 
 		
-		//listeners
+		// listeners
 		bAskGroup.setOnClickListener(this);
 		bAskPublic.setOnClickListener(this);
         spinner.setOnItemSelectedListener(this);
         Profilebtn.setOnClickListener(this);
 		
 		
-		//Pass username from Login
+		// Pass username from Login
 		username = getIntent().getExtras().getString("Username");
 		
 		Get getNames = new Get();
@@ -167,8 +167,7 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 	public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
 		 // On selecting a spinner item
 		category = parent.getItemAtPosition(position).toString();
-		// Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + category, Toast.LENGTH_LONG).show();
+	
  
 	}
 	
@@ -209,8 +208,9 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
                 
                 if (success == 1) {
                 	Log.d("Question Posted!", json.toString());
-                //  Intent i = new Intent(LoginActivity.this, ProfileActivity.class);
-    			//	startActivity(i);
+                    Intent askedQuestions = new Intent(ProfileActivity.this, AskedQuestionsActivity.class);
+    				startActivity(askedQuestions);
+    				askedQuestions.putExtra("username", username);
                 	return json.getString(TAG_MESSAGE);
                 }else{
                 	Log.d("Failed!", json.getString(TAG_MESSAGE));

@@ -37,7 +37,7 @@ public class RegisterActivity extends Activity implements OnClickListener{
     //When testing on GenyMotion Use ip : private static final String LOGIN_URL = "http://192.168.56.1:1234/webservice/index2.php"
     //When using emulator use : private static final String LOGIN_URL = "http://10.0.2.2:1234/webservice/index2.php"
     //testing on Emulator:
-    private static final String LOGIN_URL = "http://192.168.56.1:1234/webservice/register.php";
+    private static final String LOGIN_URL = "http://192.168.56.1:1234/FinalYearApp/register.php";
     
     //JSON element ids from repsonse of php script:
     private static final String TAG_SUCCESS = "success";
