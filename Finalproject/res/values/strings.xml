@@ -26,12 +26,14 @@
     
     <string name="spinner_title">Select Category</string>
     <string-array name="category_array">
-	        <item>Arts</item>
+	        <item>Art</item>
 	        <item>Business</item>
-	        <item>Computing</item>
-	        <item>Engineering</item>
-	        <item>Medicine</item>
-	        <item>Sciences</item>
+	        <item>English</item>
+	        <item>Geography</item>
+	        <item>History</item>
+	        <item>Math</item>
+	        <item>Religion</item>
+	        <item>Science</item>
     </string-array>
     
      

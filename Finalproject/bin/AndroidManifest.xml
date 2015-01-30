@@ -37,8 +37,13 @@
             android:label="@string/app_name" >
         </activity>
         
-           <activity
+        <activity
             android:name="com.example.finalproject.AskedQuestionsActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
+        <activity
+            android:name="com.example.finalproject.ViewQuestionActivity"
             android:label="@string/app_name" >
         </activity>
         

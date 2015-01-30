@@ -8,7 +8,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -21,6 +20,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Shader.TileMode;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -38,7 +41,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ProfileActivity extends Activity implements OnClickListener, OnItemSelectedListener{
 	
@@ -88,6 +90,8 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
    // For use with the camera
 	protected static final int SELECT_FILE = 0;
 	protected static final int REQUEST_CAMERA = 0;
+	
+	RoundImage roundedImage;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -142,11 +146,14 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 
 	   //Attaching data adapter to spinner
 	    spinner.setAdapter(adapter);
+	    
+	    //Takes a resource from drawable and makes it round 
+	    Bitmap bm = BitmapFactory.decodeResource(getResources(),R.drawable.profilepic_icon);
+        roundedImage = new RoundImage(bm);
+        profilepic.setImageDrawable(roundedImage);
 		
 	}
 	
-
-    
 	//When a certain button is pressed 
 	@Override
 	public void onClick(View v) {
@@ -209,8 +216,8 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
                 if (success == 1) {
                 	Log.d("Question Posted!", json.toString());
                     Intent askedQuestions = new Intent(ProfileActivity.this, AskedQuestionsActivity.class);
+                    askedQuestions.putExtra("username", username);
     				startActivity(askedQuestions);
-    				askedQuestions.putExtra("username", username);
                 	return json.getString(TAG_MESSAGE);
                 }else{
                 	Log.d("Failed!", json.getString(TAG_MESSAGE));
@@ -244,6 +251,7 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				if (items[item].equals("Take Photo")) {
+					//Start the Camera, If camera is started through intent, no need for permissions 
 					Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 					File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
 					intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
@@ -265,8 +273,7 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 	}
 	
 	////////////////////
-	
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -281,15 +288,29 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 					}
 				}
 				try {
-					Bitmap bm;
+					
+					Bitmap bm, circleBitmap;
+					
 					BitmapFactory.Options btmapOptions = new BitmapFactory.Options();
 
 					bm = BitmapFactory.decodeFile(f.getAbsolutePath(),
 							btmapOptions);
 
-					// bm = Bitmap.createScaledBitmap(bm, 70, 70, true);
-					profilepic.setImageBitmap(bm);
+					//Make image 80x80
+					bm = Bitmap.createScaledBitmap(bm, 80, 80, true);
+					
+					//Create a Circular Bitmap Image 
+					circleBitmap = Bitmap.createBitmap(bm.getWidth(), bm.getHeight(), Bitmap.Config.ARGB_8888);
 
+					BitmapShader shader = new BitmapShader (bm,  TileMode.CLAMP, TileMode.CLAMP);
+					Paint paint = new Paint();
+					paint.setShader(shader);
+					paint.setAntiAlias(true);
+					Canvas canvas = new Canvas(circleBitmap);
+					canvas.drawCircle(bm.getWidth()/2, bm.getHeight()/2, bm.getWidth()/2, paint);
+
+					profilepic.setImageBitmap(circleBitmap);
+					
 					String path = android.os.Environment
 							.getExternalStorageDirectory() + File.separator + "Phoenix" + File.separator + "default";
 					f.delete();
@@ -317,8 +338,9 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 				String tempPath = getPath(selectedImageUri, ProfileActivity.this);
 				Bitmap bm;
 				BitmapFactory.Options btmapOptions = new BitmapFactory.Options();
-				bm = BitmapFactory.decodeFile(tempPath, btmapOptions);
+				bm = BitmapFactory.decodeFile(tempPath, btmapOptions);;
 				profilepic.setImageBitmap(bm);
+				
 			}
 		}
 	}
