@@ -31,6 +31,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -41,6 +44,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ProfileActivity extends Activity implements OnClickListener, OnItemSelectedListener{
 	
@@ -62,7 +66,7 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 	String username = "";
 	
 	//Spinner selection
-	String category;
+	String category, askedQuestion , namedTitle;
 	ArrayAdapter adapter;
  
     //JSON parser class
@@ -187,12 +191,17 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 			
 			 // Check for success tag
             int success;
-            
-            String askedQuestion = question.getText().toString();
-            String namedTitle = title.getText().toString();
+            askedQuestion = question.getText().toString();
+            namedTitle = title.getText().toString();
             category = spinner.getSelectedItem().toString();
             
+            String error = isValidQuestionAndTitle();
             
+            if(!error.isEmpty()){
+            	return error;
+            }
+            
+                      
             try {
                 // Building Parameters
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -227,9 +236,29 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+          
  
             return null;
 			
+		}
+
+		//Check if Title and Question are not empty 
+		private String isValidQuestionAndTitle() {
+			if(!isStringValid(namedTitle)){
+				return "Please Enter a Title";
+			}
+			else if(!isStringValid(askedQuestion)){
+				return "Please Enter a Question";
+			}
+			
+			return "";
+		}
+		
+		private boolean isStringValid(String string) {
+			if(string.isEmpty()){
+				return false;
+			}
+			return true;
 		}
 
 	}
@@ -352,6 +381,33 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 		cursor.moveToFirst();
 		return cursor.getString(column_index);
 	}
+
 	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		
+		MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.main_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
+			
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle presses on the action bar items
+	    switch (item.getItemId()) {
+	        case R.id.action_friends:
+	         Toast.makeText(this, "You clicked Friends", Toast.LENGTH_LONG).show();
+	            	return true;
+	        case R.id.action_askedQuestions:
+	        	Intent askedQuestions = new Intent(ProfileActivity.this, AskedQuestionsActivity.class);
+	        	askedQuestions.putExtra("username", username);
+	        	startActivity(askedQuestions);
+	        		return true;
+	            
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
 		 
 }

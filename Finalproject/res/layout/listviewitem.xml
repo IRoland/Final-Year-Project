@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"  >
+
+    <ImageView
+        android:id="@+id/ivQuestionIcon"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/tvQuestionTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="false"
+        android:layout_marginLeft="10dp"
+        android:layout_alignTop="@+id/ivQuestionIcon"
+        android:layout_toRightOf="@+id/ivQuestionIcon"
+        android:text="TextView"
+        android:textSize="16sp" />
+    
+    <TextView
+        android:id="@+id/tvQuestionDescription"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@+id/tvQuestionTitle"
+        android:layout_below="@+id/tvQuestionTitle"
+        android:ellipsize="none"
+        android:singleLine="false"
+        android:layout_alignBottom="@+id/ivQuestionIcon"
+        android:text="Small Text"
+        android:textSize="13sp" />
+
+    
+
+</RelativeLayout>

@@ -36,6 +36,8 @@
 	        <item>Science</item>
     </string-array>
     
-     
+     <string name="action_friends">Friends</string>
+     <string name="action_askedQuestions">My Questions</string>
+     <string name="action_Notifications">Notifications</string>
     
 </resources>

@@ -102,7 +102,6 @@ public class RegisterActivity extends Activity implements OnClickListener{
             pDialog.show();
         }
 		
-        
 		@Override
 		protected String doInBackground(String... args) {
 			
@@ -188,7 +187,6 @@ public class RegisterActivity extends Activity implements OnClickListener{
 			return "";
 		}
 
-
 		private boolean isStringValid(String string) {
 			if(string.isEmpty()){
 				return false;
@@ -224,9 +222,9 @@ public class RegisterActivity extends Activity implements OnClickListener{
 			return false;
 		}
 
-
 		/**
          * After completing background task Dismiss the progress dialog
+
          * **/
         protected void onPostExecute(String file_url) {
             // dismiss the dialog once product deleted
