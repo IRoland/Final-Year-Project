@@ -70,7 +70,7 @@ public class AskedQuestionsActivity extends Activity{
 	}
 	
 
-	private void viewClickedQuestion() {
+private void viewClickedQuestion() {
 		
 		
 		lvAskedQuestions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -93,7 +93,7 @@ public class AskedQuestionsActivity extends Activity{
 		
 	}
 
-	private class QuestionArrayAdapter extends ArrayAdapter<Question>{
+private class QuestionArrayAdapter extends ArrayAdapter<Question>{
 		
 		public QuestionArrayAdapter(){
 			super(AskedQuestionsActivity.this, R.layout.listviewitem, askedQuestions);
@@ -124,7 +124,7 @@ public class AskedQuestionsActivity extends Activity{
 	
 	 		
 	
-	class AskedQuestions extends AsyncTask<String, String, String> {
+class AskedQuestions extends AsyncTask<String, String, String> {
 			
 			List<Question> reterievedQuestions = new ArrayList<Question>();
 		

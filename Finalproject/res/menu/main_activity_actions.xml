@@ -9,7 +9,7 @@
        <item android:id="@+id/action_askedQuestions"
          	 android:title="@string/action_askedQuestions"
          	 android:icon="@drawable/ic_action_email"
-         	 android:showAsAction="ifRoom" />
+         	 android:showAsAction="always" />
       
        <item android:id="@+id/action_Notifications"
          	 android:title="@string/action_Notifications"
@@ -21,5 +21,4 @@
          	 android:icon="@drawable/ic_action_settings"
          	 android:showAsAction="ifRoom" />
        
-
 </menu>

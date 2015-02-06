@@ -39,5 +39,12 @@
      <string name="action_friends">Friends</string>
      <string name="action_askedQuestions">My Questions</string>
      <string name="action_Notifications">Notifications</string>
+     
+     <string name="btnChat">Chat</string>
+     <string name="btnChallenge">Challenge</string>
+     <string name="btnAddUser">Add</string>
+     <string name="btnBlockUser">Block</string>
+     
+     
     
 </resources>

@@ -397,7 +397,9 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 	    // Handle presses on the action bar items
 	    switch (item.getItemId()) {
 	        case R.id.action_friends:
-	         Toast.makeText(this, "You clicked Friends", Toast.LENGTH_LONG).show();
+	         Intent friendsList = new Intent(ProfileActivity.this, FriendsListActivity.class);
+	         friendsList.putExtra("username", username);
+	         startActivity(friendsList);
 	            	return true;
 	        case R.id.action_askedQuestions:
 	        	Intent askedQuestions = new Intent(ProfileActivity.this, AskedQuestionsActivity.class);
