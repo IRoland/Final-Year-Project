@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -67,6 +68,7 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 	private Spinner spinner;
 	
 	String username = "";
+	String notificationUsernames;
 	
 	//Spinner selection
 	String category, askedQuestion , namedTitle;
@@ -75,9 +77,6 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
     //JSON parser class
     JSONParser jsonParser = new JSONParser();
     
-    //php login script location:
-    
-  
     //To testing on your device
     //Put your local ip instead,
     
@@ -85,7 +84,8 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
     //When testing on GenyMotion Use ip : private static final String LOGIN_URL = "http://192.168.56.1:1234/webservice/index2.php"
     //When using emulator use : private static final String LOGIN_URL = "http://10.0.2.2:1234/webservice/index2.php"
     private static final String LOGIN_URL = "http://192.168.56.1:1234/FinalYearApp/addQuestion.php";
-    
+    private static final String GET_NOTIFICATIONS_URL = "http://192.168.56.1:1234/FinalYearApp/getNotifications.php";
+  
    
     //testing from a real server:
     //private static final String LOGIN_URL = "http://www.yourdomain.com/webservice/login.php";
@@ -93,6 +93,7 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
     // JSON element ids from repsonse of php script:
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_MESSAGE = "message";
+    private static final String TAG_VALUES  = "userlist";
 
    // For use with the camera
 	protected static final int SELECT_FILE = 0;
@@ -409,7 +410,7 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 	        	startActivity(askedQuestions);
 	        		return true;
 	        case R.id.action_Notifications:
-	        	createNotification(firstname);
+	        	new CheckForNotifications().execute();
 	        		return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -417,7 +418,7 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 	}
 	
 	
-	public void createNotification(View view) {
+	public void createNotification(int notiID,String fName, String sName, String P) {
 		    // Prepare intent which is triggered if the
 		    // notification is selected
 		    Intent intent = new Intent(this, NotificationReceiverActivity.class);
@@ -426,7 +427,7 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 		    // Build notification
 		    Notification noti = new Notification.Builder(this)
 		        .setContentTitle("Friend Request")
-		        .setContentText("Pending Friend Request From" +" "+ username).setSmallIcon(R.drawable.ic_action_new_event)
+		        .setContentText("Friend Request From" +" "+ fName + " " + sName).setSmallIcon(R.drawable.ic_action_new_event)
 		        .setContentIntent(pIntent)
 		        .addAction(0, "Accept", pIntent)
 		        .addAction(0, "Decline", pIntent)
@@ -437,7 +438,70 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 		    // hide the notification after its selected
 		    noti.flags |= Notification.FLAG_AUTO_CANCEL;
 
-		    notificationManager.notify(0, noti);
+		    notificationManager.notify(notiID, noti);
 
 		  }
+	
+	
+	class CheckForNotifications extends AsyncTask<String, String, String> {
+
+		@Override
+		protected String doInBackground(String... args) {
+			
+			 // Check for success tag
+            int success;
+			JSONArray results,jArray;
+			String message;
+			String first_names = "";
+			String second_names = "";
+
+            try {
+                // Building Parameters
+                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                params.add(new BasicNameValuePair("Username", username));
+                
+                // getting product details by making HTTP requests
+                JSONObject json = jsonParser.makeHttpRequest(
+                       GET_NOTIFICATIONS_URL, "POST", params);
+ 
+                // check your log for json response
+                Log.d("Getting notifications", json.toString());
+ 
+                // json success tag   
+                success = json.getInt(TAG_SUCCESS);
+                message = json.getString(TAG_MESSAGE);
+                results = json.getJSONArray(TAG_VALUES);
+                
+                JSONObject json_data=null;
+                
+                for(int i=0;i<results.length();i++){
+                    json_data    = results.getJSONObject(i);
+                    first_names  = json_data.getString("first_names");
+                    second_names = json_data.getString("second_names");
+                    notificationUsernames = json_data.getString("notification_usernames");
+                    createNotification(i,first_names,second_names,notificationUsernames);
+                }
+                
+                if (success == 1) {
+                	Log.d("Success!", json.toString());
+                	
+                    
+                	return json.getString(TAG_MESSAGE);
+                }else{
+                	Log.d("Failed!", json.getString(TAG_MESSAGE));
+                	return json.getString(TAG_MESSAGE);
+                	
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+          
+ 
+            return null;
+			
+		}
+		
+		
+	}
+	
 }

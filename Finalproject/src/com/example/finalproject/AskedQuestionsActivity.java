@@ -158,10 +158,6 @@ class AskedQuestions extends AsyncTask<String, String, String> {
                 
                 
                 JSONObject json_data=null;
-                
-                
-               
-                
                
                 for(int i=0;i<results.length();i++){
                     json_data = results.getJSONObject(i);
@@ -174,9 +170,7 @@ class AskedQuestions extends AsyncTask<String, String, String> {
 
                 if (success == 1) {
                 	Log.d("Questions Reterieved", json.toString());
-                 // Intent askedQuestions = new Intent(ProfileActivity.this, AskedQuestionsActivity.class);
-                 // askedQuestions.putExtra("username", username);
-    			 // startActivity(askedQuestions);
+                
                 	return json.getString(TAG_MESSAGE);
                 }else{
                 	Log.d("Failed!", json.getString(TAG_MESSAGE));
