@@ -39,6 +39,11 @@ public class ViewUserProfileActivity extends Activity implements OnClickListener
 	
 	JSONParser jsonParser = new JSONParser();
 	
+	private static final String TAG_SUCCESS = "success";
+	private static final String TAG_MESSAGE = "message";
+	
+	private static final String addFriendURl = "http://192.168.56.1:1234/FinalYearApp/AddFriend.php";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -82,7 +87,7 @@ public void onClick(View v) {
 		case R.id.btnAddUser:
 			 friendButtonText = btnAdd.getText().toString();
 			 if(friendButtonText.equals("Add")){
-				//new AddFriend().execute();
+				 new AddFriend().execute();
 				 btnAdd.setText("Unfriend");
 			 }
 			 else{
@@ -101,7 +106,52 @@ public void onClick(View v) {
 		break;
 	default:
 		}
+
 }
+
+
+//Login In Page
+class AddFriend extends AsyncTask<String, String, String> {
+
+	@Override
+	protected String doInBackground(String... args) {
+		
+		 // Check for success tag
+        int success;
+        
+        try {
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("username", currentUsername));
+            params.add(new BasicNameValuePair("friendusername", clickedUsername));
+                        
+            Log.d("request!", "starting");
+            // getting product details by making HTTP request
+            JSONObject json = jsonParser.makeHttpRequest(
+            		addFriendURl, "POST", params);
+
+            // json success tag
+            success = json.getInt(TAG_SUCCESS);
+            if (success == 1) {
+            	Log.d("Friend Added!", json.toString());
+            
+            	return json.getString(TAG_MESSAGE);
+            }else{
+            	Log.d("Failed", json.getString(TAG_MESSAGE));
+            	return json.getString(TAG_MESSAGE);
+            	
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        
+        return null;
+	}
+	
+}
+	
+
+
 
 
 

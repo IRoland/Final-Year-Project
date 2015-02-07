@@ -34,13 +34,14 @@ public final class R {
         public static final int english_icon=0x7f020000;
         public static final int history_icon=0x7f020001;
         public static final int ic_action_email=0x7f020002;
-        public static final int ic_action_overflow=0x7f020003;
-        public static final int ic_action_person=0x7f020004;
-        public static final int ic_action_settings=0x7f020005;
-        public static final int ic_action_unread=0x7f020006;
-        public static final int ic_launcher=0x7f020007;
-        public static final int maths_icon=0x7f020008;
-        public static final int profilepic_icon=0x7f020009;
+        public static final int ic_action_new_event=0x7f020003;
+        public static final int ic_action_overflow=0x7f020004;
+        public static final int ic_action_person=0x7f020005;
+        public static final int ic_action_settings=0x7f020006;
+        public static final int ic_action_unread=0x7f020007;
+        public static final int ic_launcher=0x7f020008;
+        public static final int maths_icon=0x7f020009;
+        public static final int profilepic_icon=0x7f02000a;
     }
     public static final class id {
         public static final int Profilebtn=0x7f09000a;
@@ -92,12 +93,13 @@ public final class R {
         public static final int activity_askedquestions=0x7f030000;
         public static final int activity_friendslist=0x7f030001;
         public static final int activity_login=0x7f030002;
-        public static final int activity_profile=0x7f030003;
-        public static final int activity_register=0x7f030004;
-        public static final int activity_userprofile=0x7f030005;
-        public static final int activity_viewquestion=0x7f030006;
-        public static final int listviewfriends=0x7f030007;
-        public static final int listviewitem=0x7f030008;
+        public static final int activity_notifications=0x7f030003;
+        public static final int activity_profile=0x7f030004;
+        public static final int activity_register=0x7f030005;
+        public static final int activity_userprofile=0x7f030006;
+        public static final int activity_viewquestion=0x7f030007;
+        public static final int listviewfriends=0x7f030008;
+        public static final int listviewitem=0x7f030009;
     }
     public static final class menu {
         public static final int main=0x7f080000;

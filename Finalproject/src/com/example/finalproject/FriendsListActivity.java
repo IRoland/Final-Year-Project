@@ -121,7 +121,7 @@ private class FriendsArrayAdapter extends ArrayAdapter<Friend>{
 			name.setText(fullName);
 			
 			TextView status = (TextView) itemView.findViewById(R.id.tvUserStatus);
-			//status.setText(currentFriend.getStatus());
+			 status.setText(currentFriend.getUsername());
 			
 			return itemView;
 		}

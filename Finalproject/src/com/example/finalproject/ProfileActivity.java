@@ -15,6 +15,9 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -301,7 +304,6 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 		builder.show();
 	}
 	
-	////////////////////
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -406,10 +408,36 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 	        	askedQuestions.putExtra("username", username);
 	        	startActivity(askedQuestions);
 	        		return true;
-	            
+	        case R.id.action_Notifications:
+	        	createNotification(firstname);
+	        		return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
-		 
+	
+	
+	public void createNotification(View view) {
+		    // Prepare intent which is triggered if the
+		    // notification is selected
+		    Intent intent = new Intent(this, NotificationReceiverActivity.class);
+		    PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+		    // Build notification
+		    Notification noti = new Notification.Builder(this)
+		        .setContentTitle("Friend Request")
+		        .setContentText("Pending Friend Request From" +" "+ username).setSmallIcon(R.drawable.ic_action_new_event)
+		        .setContentIntent(pIntent)
+		        .addAction(0, "Accept", pIntent)
+		        .addAction(0, "Decline", pIntent)
+		        .addAction(0, "Ignore", pIntent)
+		        .build();
+		    NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		    
+		    // hide the notification after its selected
+		    noti.flags |= Notification.FLAG_AUTO_CANCEL;
+
+		    notificationManager.notify(0, noti);
+
+		  }
 }
