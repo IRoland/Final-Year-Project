@@ -134,14 +134,14 @@ public class LoginActivity extends Activity implements OnClickListener{
  
                 // check your log for json response
                 Log.d("Login attempt", json.toString());
- 
+                
+                
                 // json success tag
                 success = json.getInt(TAG_SUCCESS);
                 if (success == 1) {
                 	Log.d("Login Successful!", json.toString());
                 	Intent profile = new Intent(LoginActivity.this, ProfileActivity.class);
-                	//
-                	profile.putExtra("Username", username );
+                	profile.putExtra("Username", username );	
     				startActivity(profile);
     				
                 	return json.getString(TAG_MESSAGE);

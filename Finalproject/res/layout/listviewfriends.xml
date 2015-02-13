@@ -33,7 +33,6 @@
         android:text="Small Text"
         android:textSize="13sp" />
 
-   
-    
+
 
 </RelativeLayout>

@@ -101,7 +101,6 @@ private class QuestionArrayAdapter extends ArrayAdapter<Question>{
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			
 			View itemView = convertView;
 			if(itemView == null){
 				itemView = getLayoutInflater().inflate(R.layout.listviewitem, parent, false);
@@ -189,7 +188,6 @@ class AskedQuestions extends AsyncTask<String, String, String> {
 		protected void onPostExecute(String result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-			
 			for(Question question: reterievedQuestions)
 			 askedQuestions.add(question);
 			 

@@ -21,6 +21,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -70,6 +71,9 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 	String username = "";
 	String notificationUsernames;
 	
+	//For Notifications
+	String accept, decline; 
+	
 	//Spinner selection
 	String category, askedQuestion , namedTitle;
 	ArrayAdapter adapter;
@@ -79,6 +83,9 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
     
     //To testing on your device
     //Put your local ip instead,
+    
+    List<Friend> notificationList = new ArrayList<Friend>();
+    List<notificationHolder> notificationList2 = new ArrayList<notificationHolder>();
     
     //testing on Emulator:
     //When testing on GenyMotion Use ip : private static final String LOGIN_URL = "http://192.168.56.1:1234/webservice/index2.php"
@@ -132,6 +139,9 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 		bAskPublic.setOnClickListener(this);
         spinner.setOnItemSelectedListener(this);
         Profilebtn.setOnClickListener(this);
+        
+        //Check for any notifications
+        new CheckForNotifications().execute();
 		
 		
 		// Pass username from Login
@@ -140,6 +150,7 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 		Get getNames = new Get();
 		
 		getNames.execute(username,"users","first_name","second_name");
+		
 		
 		try {
 			
@@ -410,7 +421,9 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 	        	startActivity(askedQuestions);
 	        		return true;
 	        case R.id.action_Notifications:
-	        	new CheckForNotifications().execute();
+	        	Intent notifications = new Intent(ProfileActivity.this, FriendRequestsActivity.class);
+	        	notifications.putExtra("username", username);
+	        	startActivity(notifications);
 	        		return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -418,20 +431,35 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 	}
 	
 	
-	public void createNotification(int notiID,String fName, String sName, String P) {
+	public void createNotification(int notiID,Friend fr) {
 		    // Prepare intent which is triggered if the
 		    // notification is selected
-		    Intent intent = new Intent(this, NotificationReceiverActivity.class);
-		    PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+			// User new Intent() to not start an intent on pending intent.
+		    Intent acceptedIntent = new Intent(this, FriendsListActivity.class);
+		    acceptedIntent.putExtra("username", username);
+		    acceptedIntent.putExtra("Accepted", accept);
+		    PendingIntent aIntent = PendingIntent.getActivity(this, 0, acceptedIntent, 0);
+		    
+		    Intent declineIntent = new Intent(this, FriendsListActivity.class);
+		    declineIntent.putExtra("username", username);
+		    declineIntent.putExtra("Declined", decline);
+		    PendingIntent dIntent = PendingIntent.getActivity(this, 0, declineIntent, 0);
+		    
+		    Intent viewIntent = new Intent(this, ViewUserProfileActivity.class);
+		    viewIntent.putExtra("Username", username);
+		    viewIntent.putExtra("firstName", notificationList.get(notiID).getFirstName());
+		    viewIntent.putExtra("secondName", notificationList.get(notiID).getSecondName());
+		    viewIntent.putExtra("clickedUsername", notificationList.get(notiID).getUsername());
+		    PendingIntent vIntent = PendingIntent.getActivity(this, 0, viewIntent, 0);
 
 		    // Build notification
 		    Notification noti = new Notification.Builder(this)
 		        .setContentTitle("Friend Request")
-		        .setContentText("Friend Request From" +" "+ fName + " " + sName).setSmallIcon(R.drawable.ic_action_new_event)
-		        .setContentIntent(pIntent)
-		        .addAction(0, "Accept", pIntent)
-		        .addAction(0, "Decline", pIntent)
-		        .addAction(0, "Ignore", pIntent)
+		        .setContentText("Friend Request From" +" "+ fr.getFirstName() + " " + fr.getSecondName()).setSmallIcon(R.drawable.profilepic_icon)
+		        .setContentIntent(vIntent)
+		        .addAction(0, "Accept", aIntent)
+		        .addAction(0, "Decline", dIntent)
+		        .addAction(0, "View Profile", vIntent)
 		        .build();
 		    NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		    
@@ -479,7 +507,8 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
                     first_names  = json_data.getString("first_names");
                     second_names = json_data.getString("second_names");
                     notificationUsernames = json_data.getString("notification_usernames");
-                    createNotification(i,first_names,second_names,notificationUsernames);
+                    notificationList.add(new Friend(R.drawable.ic_action_person,first_names,second_names,notificationUsernames));
+                    createNotification(i,notificationList.get(i));
                 }
                 
                 if (success == 1) {

@@ -5,8 +5,8 @@
 
     <ImageView
         android:id="@+id/ivQuestionIcon"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:src="@drawable/ic_launcher" />
 
     <TextView
@@ -19,7 +19,9 @@
         android:layout_alignTop="@+id/ivQuestionIcon"
         android:layout_toRightOf="@+id/ivQuestionIcon"
         android:text="TextView"
-        android:textSize="16sp" />
+        android:textSize="13sp" 
+        android:textStyle="bold"/>
+    
     
     <TextView
         android:id="@+id/tvQuestionDescription"
@@ -33,7 +35,5 @@
         android:layout_alignBottom="@+id/ivQuestionIcon"
         android:text="Small Text"
         android:textSize="13sp" />
-
-    
 
 </RelativeLayout>

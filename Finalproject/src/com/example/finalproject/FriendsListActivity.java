@@ -25,8 +25,7 @@ import android.widget.TextView;
 public class FriendsListActivity extends Activity{
 	
 	String Username;
-	
-	Button add;
+
 	
 	 // JSON element ids from repsonse of php script:
     private static final String TAG_SUCCESS = "success";
@@ -59,8 +58,6 @@ public class FriendsListActivity extends Activity{
 		ArrayAdapter<Friend> FriendsListAdapter = new FriendsArrayAdapter();
 				
 		ListView FriendsList = (ListView) findViewById(R.id.lvFriendsList);
-		
-		//add = (Button) findViewById(R.id.btnAddFriend);
 		
 		FriendsList.setAdapter(FriendsListAdapter);
 				
@@ -172,8 +169,6 @@ protected String doInBackground(String... args) {
             usernames   = json_data.getString("usernames");
             reterievedFriends.add(new Friend(R.drawable.ic_action_person,firstNames,secondNames,usernames));
         }
-        
-        
 
         if (success == 1) {
         	Log.d("Friends Reterieved", json.toString());
@@ -195,7 +190,6 @@ protected String doInBackground(String... args) {
 protected void onPostExecute(String result) {
 	// TODO Auto-generated method stub
 	super.onPostExecute(result);
-	
 	for(Friend friend: reterievedFriends)
 	 friendsList.add(friend);
 	 

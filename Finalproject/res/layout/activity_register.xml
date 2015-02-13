@@ -68,7 +68,7 @@
             android:layout_marginTop="10dp"
             android:ems="10"
             android:hint="@string/Password"
-            android:inputType="textPersonName|textWebEmailAddress|textPassword" />
+            android:inputType="textPassword" />
         
         <EditText
             android:id="@+id/etPasswordConfirm"
@@ -77,7 +77,7 @@
             android:layout_marginTop="10dp"
             android:ems="10"
             android:hint="@string/PasswordConfirm"
-            android:inputType="textPersonName|textWebEmailAddress|textPassword" />
+            android:inputType="textPassword" />
 
 	    <Button
 	        android:id="@+id/bRegister"

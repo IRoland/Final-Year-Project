@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"  >
+
+    <ImageView
+        android:id="@+id/ivRequestProfileIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/profilepic_icon" />
+
+    <TextView
+        android:id="@+id/tvRequestName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="false"
+        android:layout_marginLeft="10dp"
+        android:layout_alignTop="@+id/ivRequestProfileIcon"
+        android:layout_toRightOf="@+id/ivRequestProfileIcon"
+        android:text="TextView"
+        android:textSize="16sp" />
+    
+    <Button
+        android:id="@+id/btnRequestConfirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ivRequestProfileIcon"
+        android:layout_alignLeft="@+id/tvRequestName"
+        android:background="@null"
+        android:textSize="12sp"
+        android:layout_below="@+id/tvRequestName"
+        android:layout_toLeftOf="@+id/btnRequestDelete"
+        android:text="@string/btnConfirm" />
+
+    <Button
+        android:id="@+id/btnRequestDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btnRequestConfirm"
+        android:background="@null"
+        android:textSize="12sp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tvRequestName"
+        android:text="@string/btnDelete" />
+
+</RelativeLayout>

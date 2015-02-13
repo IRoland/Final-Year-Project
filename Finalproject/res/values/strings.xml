@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Finalproject</string>
+    <string name="app_name">Solvit</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="Login">bSubmit</string>
@@ -44,6 +44,13 @@
      <string name="btnChallenge">Challenge</string>
      <string name="btnAddUser">Add</string>
      <string name="btnBlockUser">Block</string>
+     <string name="tvAskedQ">Asked Questions</string>
+     
+     
+     
+     <string name="btnEdit">Edit</string>
+     <string name="btnDelete">Delete</string>
+     <string name="btnConfirm">Confirm</string>
      
      
     

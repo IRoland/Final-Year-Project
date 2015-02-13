@@ -17,7 +17,7 @@
         android:layout_marginTop="28dp"
         android:ems="10"
         android:hint="@string/etPass"
-        android:inputType="textPersonName|none" />
+        android:inputType="textPassword" />
 
     <EditText
         android:id="@+id/etUser"
