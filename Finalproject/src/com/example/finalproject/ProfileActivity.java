@@ -431,35 +431,21 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 	}
 	
 	
-	public void createNotification(int notiID,Friend fr) {
+	public void createNotification(int notiID) {
 		    // Prepare intent which is triggered if the
 		    // notification is selected
 			// User new Intent() to not start an intent on pending intent.
-		    Intent acceptedIntent = new Intent(this, FriendsListActivity.class);
-		    acceptedIntent.putExtra("username", username);
-		    acceptedIntent.putExtra("Accepted", accept);
-		    PendingIntent aIntent = PendingIntent.getActivity(this, 0, acceptedIntent, 0);
-		    
-		    Intent declineIntent = new Intent(this, FriendsListActivity.class);
-		    declineIntent.putExtra("username", username);
-		    declineIntent.putExtra("Declined", decline);
-		    PendingIntent dIntent = PendingIntent.getActivity(this, 0, declineIntent, 0);
-		    
-		    Intent viewIntent = new Intent(this, ViewUserProfileActivity.class);
-		    viewIntent.putExtra("Username", username);
-		    viewIntent.putExtra("firstName", notificationList.get(notiID).getFirstName());
-		    viewIntent.putExtra("secondName", notificationList.get(notiID).getSecondName());
-		    viewIntent.putExtra("clickedUsername", notificationList.get(notiID).getUsername());
+		    Intent viewIntent = new Intent(this, FriendRequestsActivity.class);
+		    viewIntent.putExtra("username", username);
+		    	
 		    PendingIntent vIntent = PendingIntent.getActivity(this, 0, viewIntent, 0);
 
 		    // Build notification
 		    Notification noti = new Notification.Builder(this)
 		        .setContentTitle("Friend Request")
-		        .setContentText("Friend Request From" +" "+ fr.getFirstName() + " " + fr.getSecondName()).setSmallIcon(R.drawable.profilepic_icon)
+		        .setContentText("You have " + notiID + " Pending Friend Request(s)...").setSmallIcon(R.drawable.profilepic_icon)
 		        .setContentIntent(vIntent)
-		        .addAction(0, "Accept", aIntent)
-		        .addAction(0, "Decline", dIntent)
-		        .addAction(0, "View Profile", vIntent)
+		        .addAction(0, "View Notifications", vIntent)
 		        .build();
 		    NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		    
@@ -499,17 +485,9 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
                 success = json.getInt(TAG_SUCCESS);
                 message = json.getString(TAG_MESSAGE);
                 results = json.getJSONArray(TAG_VALUES);
+
+                createNotification(results.length());
                 
-                JSONObject json_data=null;
-                
-                for(int i=0;i<results.length();i++){
-                    json_data    = results.getJSONObject(i);
-                    first_names  = json_data.getString("first_names");
-                    second_names = json_data.getString("second_names");
-                    notificationUsernames = json_data.getString("notification_usernames");
-                    notificationList.add(new Friend(R.drawable.ic_action_person,first_names,second_names,notificationUsernames));
-                    createNotification(i,notificationList.get(i));
-                }
                 
                 if (success == 1) {
                 	Log.d("Success!", json.toString());
