@@ -65,8 +65,6 @@ public class AskedQuestionsActivity extends Activity{
 		
 		viewClickedQuestion();
 
-		
-		
 	}
 	
 
@@ -120,8 +118,7 @@ private class QuestionArrayAdapter extends ArrayAdapter<Question>{
 			return itemView;
 		}
 	}
-	
-	 		
+		 		
 	
 class AskedQuestions extends AsyncTask<String, String, String> {
 			

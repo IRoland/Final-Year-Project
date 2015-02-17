@@ -9,9 +9,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.finalproject.ProfileActivity.PostPublic;
-
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -26,7 +23,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 public class FriendRequestsActivity extends Activity{
 
@@ -40,6 +37,8 @@ public class FriendRequestsActivity extends Activity{
     JSONParser jsonParser = new JSONParser();
     
     private static final String GET_NOTIFICATIONS_URL = "http://192.168.56.1:1234/FinalYearApp/getNotifications.php";
+    private static final String ACCEPTFRIEND_URL = "http://192.168.56.1:1234/FinalYearApp/acceptFriendRequest.php";
+    private static final String DELETEFRIEND_URL = "http://192.168.56.1:1234/FinalYearApp/deleteFriendRequest.php";
     
     List<Friend> friendRequestsList = new ArrayList<Friend>();
     
@@ -122,8 +121,7 @@ private class FriendRequestsArrayAdapter extends ArrayAdapter<Friend> {
 			{
 				@Override
 				public void onClick(View v) {
-					Toast.makeText(FriendRequestsActivity.this, "Clicked" + currentFriendRequest.getSecondName(), Toast.LENGTH_LONG).show();
-					
+					new AcceptFriendRequest().execute(currentFriendRequest.getUsername());
 				}
 				
 			});
@@ -132,7 +130,7 @@ private class FriendRequestsArrayAdapter extends ArrayAdapter<Friend> {
 			{
 				@Override
 				public void onClick(View v) {
-					Toast.makeText(FriendRequestsActivity.this, "Noo Nigger" + currentFriendRequest.getSecondName(), Toast.LENGTH_LONG).show();
+					new DeleteFriendRequest().execute(currentFriendRequest.getUsername());
 					
 				}
 				
@@ -216,6 +214,69 @@ protected void onPostExecute(String result) {
 			}
 
 	}
+
+
+class AcceptFriendRequest extends AsyncTask<String, String, String> {
+
+protected String doInBackground(String... args) {
+	
+
+    try {
+        // Building Parameters
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("username", Username));
+        params.add(new BasicNameValuePair("friendusername", args[0]));
+        
+        Log.d("request!", "starting");
+        // getting product details by making HTTP requests
+        JSONObject json = jsonParser.makeHttpRequest(
+        		ACCEPTFRIEND_URL, "POST", params);
+
+      
+        return json.getString(TAG_MESSAGE);
+   
+        
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
+
+	return null;
+		}
+
+
+	}
+
+
+class DeleteFriendRequest extends AsyncTask<String, String, String> {
+
+protected String doInBackground(String... args) {
+	
+
+    try {
+        // Building Parameters
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("username", Username));
+        params.add(new BasicNameValuePair("friendusername", args[0]));
+        
+        Log.d("request!", "starting");
+        // getting product details by making HTTP requests
+        JSONObject json = jsonParser.makeHttpRequest(
+        		DELETEFRIEND_URL, "POST", params);
+
+      
+        return json.getString(TAG_MESSAGE);
+   
+        
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
+
+	return null;
+		}
+
+
+	}
+
 
 
 

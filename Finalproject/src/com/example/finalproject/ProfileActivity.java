@@ -502,8 +502,7 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-          
- 
+
             return null;
 			
 		}

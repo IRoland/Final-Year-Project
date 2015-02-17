@@ -10,7 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -35,6 +35,7 @@ public class ViewUserProfileActivity extends Activity implements OnClickListener
 	
 	private ImageView ivUserProfilePic;
 	
+	//Round Userprofile Pic
 	RoundImage roundedImage;
 	
 	Button btnAdd,btnChat,btnChallenge,btnBlock;
@@ -49,11 +50,13 @@ public class ViewUserProfileActivity extends Activity implements OnClickListener
 	 private static final String TAG_MESSAGE = "message";
 	 private static final String TAG_VALUES  = "userlist";
 	
-	private static final String addFriendURl = "http://192.168.56.1:1234/FinalYearApp/AddFriend.php";
-	private static final String GetQuestionsURL = "http://192.168.56.1:1234/FinalYearApp/askedQuestions.php";
+	 private static final String addFriendURl = "http://192.168.56.1:1234/FinalYearApp/AddFriend.php";
+	 private static final String GetQuestionsURL = "http://192.168.56.1:1234/FinalYearApp/askedQuestions.php";
+	 private static final String DELETEFRIEND_URL = "http://192.168.56.1:1234/FinalYearApp/deleteFriendRequest.php";
+	 private static final String CHECKIFFRIENDURL = "http://192.168.56.1:1234/FinalYearApp/checkIsFriend.php";
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_userprofile);
 		
@@ -84,7 +87,9 @@ public class ViewUserProfileActivity extends Activity implements OnClickListener
 		
 		lvUserAskedQuestion = (ListView) findViewById(R.id.lvUserAskedQuestion);
 		
-		//Run the class
+		//Run the classes
+		new isFriend().execute();
+		
 		new userAskedQuestions().execute();
 		
 		ArrayAdapter<Question> userAskedQuestionsAdapter = new QuestionArrayAdapter();
@@ -93,15 +98,41 @@ public class ViewUserProfileActivity extends Activity implements OnClickListener
 		
 		userAskedQuestionsList.setAdapter(userAskedQuestionsAdapter);
 		
-		//viewClickedQuestion();
+		viewClickedQuestion();
 		
 		//Round Profile Pic
 		Bitmap bm = BitmapFactory.decodeResource(getResources(),R.drawable.profilepic_icon);
         roundedImage = new RoundImage(bm);
 		ivUserProfilePic.setImageDrawable(roundedImage);
 	}
-	
 
+private void viewClickedQuestion() {
+		
+		
+	  lvUserAskedQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View viewClicked, int position,
+					long id) {
+				
+				Question clickedQuestion = userAskedQuestions.get(position);		
+
+				Intent answerQuestion = new Intent(ViewUserProfileActivity.this, AnswerQuestionActivity.class);
+				answerQuestion.putExtra("Title", clickedQuestion.getTitle());
+				answerQuestion.putExtra("Question", clickedQuestion.getDescription());
+				answerQuestion.putExtra("questionAskedByUsername", clickedUsername);
+				answerQuestion.putExtra("firstName", firstName);
+				answerQuestion.putExtra("secondName", secondName);
+				answerQuestion.putExtra("myUsername", currentUsername);
+ 				startActivity(answerQuestion);
+			}
+			
+			
+		});
+		
+	}
+	
+	
 private class QuestionArrayAdapter extends ArrayAdapter<Question>{
 		
 		public QuestionArrayAdapter(){
@@ -131,7 +162,6 @@ private class QuestionArrayAdapter extends ArrayAdapter<Question>{
 		}
 	}
 
-	
 public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btnAddUser:
@@ -140,8 +170,8 @@ public void onClick(View v) {
 				 new AddFriend().execute();
 				 btnAdd.setText("Unfriend");
 			 }
-			 else{
-				//new UnFriend().execute();
+			 else if(friendButtonText.equals("Unfriend")){
+				 new UnFriend().execute();
 				 btnAdd.setText("Add");
 			 }
 			break;
@@ -159,15 +189,11 @@ public void onClick(View v) {
 
 }
 
-
 class AddFriend extends AsyncTask<String, String, String> {
 
 	@Override
 	protected String doInBackground(String... args) {
-		
-		 // Check for success tag
-        int success;
-        
+     
         try {
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -178,18 +204,9 @@ class AddFriend extends AsyncTask<String, String, String> {
             // getting product details by making HTTP request
             JSONObject json = jsonParser.makeHttpRequest(
             		addFriendURl, "POST", params);
-
-            // json success tag
-            success = json.getInt(TAG_SUCCESS);
-            if (success == 1) {
-            	Log.d("Friend Added!", json.toString());
             
             	return json.getString(TAG_MESSAGE);
-            }else{
-            	Log.d("Failed", json.getString(TAG_MESSAGE));
-            	return json.getString(TAG_MESSAGE);
-            	
-            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -198,7 +215,85 @@ class AddFriend extends AsyncTask<String, String, String> {
 	}
 	
 }
+
+class UnFriend extends AsyncTask<String, String, String> {
+
+protected String doInBackground(String... args) {
 	
+
+    try {
+        // Building Parameters
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("username", currentUsername));
+        params.add(new BasicNameValuePair("friendusername", clickedUsername));
+        
+        Log.d("request!", "starting");
+        // getting product details by making HTTP requests
+        JSONObject json = jsonParser.makeHttpRequest(
+        		DELETEFRIEND_URL, "POST", params);
+
+      
+        return json.getString(TAG_MESSAGE);
+   
+        
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
+
+	return null;
+		}
+
+
+	}
+
+class isFriend extends AsyncTask<String, String, Integer> {
+
+		int success;
+	
+protected Integer doInBackground(String... args) {
+
+    try {
+        // Building Parameters
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("username", currentUsername));
+        params.add(new BasicNameValuePair("friendusername", clickedUsername));
+        
+        Log.d("request!", "Checking Is Friend");
+        // getting product details by making HTTP requests
+        JSONObject json = jsonParser.makeHttpRequest(
+        		CHECKIFFRIENDURL, "POST", params);
+        
+        success = json.getInt(TAG_SUCCESS);
+        
+        return success;
+        
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
+
+	return null;
+		}
+
+
+@Override
+protected void onPostExecute(Integer result) {
+	super.onPostExecute(result);
+	
+	 //Change from Add to Unfriend if success equals 1
+	if(result == 1){
+	Toast.makeText(ViewUserProfileActivity.this, "Found Match", Toast.LENGTH_LONG).show();	
+	}
+	else if(result == 0){
+	Toast.makeText(ViewUserProfileActivity.this, "No Match", Toast.LENGTH_LONG).show();
+	}
+	else{
+	Toast.makeText(ViewUserProfileActivity.this, "Fuck all Found", Toast.LENGTH_LONG).show();	
+	}
+    changeBtn(result);
+	
+		}
+
+	}
 
 class userAskedQuestions extends AsyncTask<String, String, String> {
 	
@@ -226,7 +321,7 @@ protected String doInBackground(String... args) {
         Log.d("Reterieving Questions", json.toString());
 
         //Json tags
-        success = json.getInt(TAG_SUCCESS);
+    
         message = json.getString(TAG_MESSAGE);
         results = json.getJSONArray(TAG_VALUES);
         
@@ -241,16 +336,8 @@ protected String doInBackground(String... args) {
             qDescription=json_data.getString("descriptions");
             reterievedQuestions.add(new Question(R.drawable.english_icon,qTitle,qDescription));
         }
-        
-        if (success == 1) {
-        	Log.d("Questions Reterieved", json.toString());
-        
         	return json.getString(TAG_MESSAGE);
-        }else{
-        	Log.d("Failed!", json.getString(TAG_MESSAGE));
-        	return json.getString(TAG_MESSAGE);
-        	
-        }
+ 
     } catch (JSONException e) {
         e.printStackTrace();
     }
@@ -270,8 +357,15 @@ protected void onPostExecute(String result) {
 				}
 			}
 
-
-
+public void changeBtn(int x){
+	if(x==1){
+		 btnAdd.setText("Unfriend");
+	 	}
+	
+	 else{
+		 btnAdd.setText("Add");
+	 }
+}
 
 
 	}
