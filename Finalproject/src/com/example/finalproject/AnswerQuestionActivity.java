@@ -9,15 +9,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.example.finalproject.FriendRequestsActivity.AcceptFriendRequest;
+import com.example.finalproject.ProfileActivity.PostPublic;
+
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -30,7 +36,11 @@ public class AnswerQuestionActivity extends Activity{
 
 	private String Username, questionAskedByUsername, qtitle, questionDesc, fName, sName;
 	
+	private String askedQuestion, namedTitle , answer;
+	
 	private Button btnSubmitAnswer;
+	
+	private EditText etEnterAnswer;
 	
 	private TextView tvQuestionTitleSection, tvQuestionSection,tvUserName,tvDateAsked;
 	
@@ -44,7 +54,7 @@ public class AnswerQuestionActivity extends Activity{
     JSONParser jsonParser = new JSONParser();
     
     private static final String GetAnswersURL = "http://192.168.56.1:1234/FinalYearApp/questionAnswers.php";
-	
+    private static final String AddAnswersURL = "http://192.168.56.1:1234/FinalYearApp/addAnswer.php";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +67,21 @@ public class AnswerQuestionActivity extends Activity{
 		tvQuestionSection      = (TextView) findViewById(R.id.tvQuestionSection);
 		tvUserName             = (TextView) findViewById(R.id.tvUserName);
 		tvDateAsked            = (TextView) findViewById(R.id.tvDateAsked);
+		
+		
+		etEnterAnswer		   = (EditText) findViewById(R.id.etEnterAnswer);
+		
+		btnSubmitAnswer		   =  (Button) findViewById(R.id.btnSubmitAnswer);
+		
+		btnSubmitAnswer	.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v) {
+				new PostAnswer().execute();
+
+			}
+			
+		});
 		
 		//My username
 		Username = getIntent().getExtras().getString("myUsername");
@@ -85,6 +110,7 @@ public class AnswerQuestionActivity extends Activity{
 		
 		//viewClickedQuestion();
 	}
+	
 	
 private class AnswerArrayAdapter extends ArrayAdapter<Answer>{
 		
@@ -117,8 +143,8 @@ private class AnswerArrayAdapter extends ArrayAdapter<Answer>{
 		}
 	}
 
-
 class GetAnswers extends AsyncTask<String, String, String> {
+
 	
 	List<Answer> reterievedAnswers = new ArrayList<Answer>();
 
@@ -188,4 +214,59 @@ protected void onPostExecute(String result) {
 		questionAnswers.add(answer);
 			}
 		}
+
+class PostAnswer extends AsyncTask<String, String, String> {
+
+	@Override
+	protected String doInBackground(String... args) {
+		
+		 // Check for success tag
+        int success;
+        askedQuestion = tvQuestionSection.getText().toString();
+        namedTitle    = tvQuestionTitleSection.getText().toString();
+        answer        = etEnterAnswer.getText().toString();
+
+                  
+        try {
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("AskedQuestion", askedQuestion));
+            params.add(new BasicNameValuePair("Title", namedTitle));
+            params.add(new BasicNameValuePair("Username", Username));
+            params.add(new BasicNameValuePair("QuestionUsername", questionAskedByUsername));
+            params.add(new BasicNameValuePair("Answer", answer));
+            
+            Log.d("request!", "starting");
+            // getting product details by making HTTP requests
+            JSONObject json = jsonParser.makeHttpRequest(
+            		AddAnswersURL, "POST", params);
+
+            // check your log for json response
+            Log.d("Saving Answer", json.toString());
+
+            // json success tag
+            success = json.getInt(TAG_SUCCESS);
+            
+            if (success == 1) {
+            	Log.d("Answer Posted!", json.toString());
+            	//Notify Adapter Through Method OnPostExecute
+            	return json.getString(TAG_MESSAGE);
+            }else{
+            	Log.d("Failed!", json.getString(TAG_MESSAGE));
+            	return json.getString(TAG_MESSAGE);
+            	
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+      
+
+        return null;
+		
+	}
+
+
+	}
+
+
 }
