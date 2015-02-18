@@ -53,7 +53,7 @@ public class AnswerQuestionActivity extends Activity{
   //JSON parser class
     JSONParser jsonParser = new JSONParser();
     
-    private static final String GetAnswersURL = "http://192.168.56.1:1234/FinalYearApp/questionAnswers.php";
+    private static final String GetAnswersURL = "http://192.168.56.1:1234/FinalYearApp/getAnswers.php";
     private static final String AddAnswersURL = "http://192.168.56.1:1234/FinalYearApp/addAnswer.php";
 	
 	@Override
@@ -100,7 +100,7 @@ public class AnswerQuestionActivity extends Activity{
 		tvDateAsked           .setText("2015");
 		
 		
-		//new GetAnswers().execute();
+		new GetAnswers().execute();
 		
 		ArrayAdapter<Answer> QuestionAnswersAdapter = new AnswerArrayAdapter();
 		
@@ -147,17 +147,24 @@ class GetAnswers extends AsyncTask<String, String, String> {
 
 	
 	List<Answer> reterievedAnswers = new ArrayList<Answer>();
+    
 
 protected String doInBackground(String... args) {
 	
 	int success, answererid;
 	JSONArray results,jArray;
 	String message, firstNames, secondNames, dates, answers;
+	
+	askedQuestion = tvQuestionSection.getText().toString();
+    namedTitle    = tvQuestionTitleSection.getText().toString();
 
     try {
         // Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("QuestionBy", questionAskedByUsername));
+        params.add(new BasicNameValuePair("QuestionByUsername", questionAskedByUsername));
+        params.add(new BasicNameValuePair("AskedQuestion", askedQuestion));
+        params.add(new BasicNameValuePair("Title", namedTitle));
+ 
         
         Log.d("request!", "starting");
         // getting product details by making HTTP requests
@@ -179,12 +186,12 @@ protected String doInBackground(String... args) {
        
         for(int i=0;i<results.length();i++){
             json_data = results.getJSONObject(i);
-            answers=json_data.getString("answers");
+            answers=json_data.getString("answersFrom");
             firstNames=json_data.getString("first_name");
             secondNames=json_data.getString("second_name");
             dates=json_data.getString("date");
             answererid=json_data.getInt("answereriD");
-            reterievedAnswers.add(new Answer(R.drawable.english_icon,answererid,answers,firstNames,secondNames,dates));
+            reterievedAnswers.add(new Answer(R.drawable.profilepic_icon,answererid,answers,firstNames,secondNames,dates));
         }
         
         

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:layout_alignParentTop="true">
+    
+    <RelativeLayout
+     android:layout_width="match_parent"
+     android:layout_height="match_parent" 
+     android:layout_alignParentTop="true">
+    
+     <TextView
+        android:id="@+id/tvQuestionTitleSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/tvQuestionSection"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvQuestionSection" >
+
+        <ImageView
+            android:id="@+id/ivUserPic"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/profilepic_icon" />
+
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/ivUserPic"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/tvDateAsked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/ivUserPic"
+            android:text="TextView" />
+    </RelativeLayout>
+    
+	</RelativeLayout>
+	
+</ScrollView>

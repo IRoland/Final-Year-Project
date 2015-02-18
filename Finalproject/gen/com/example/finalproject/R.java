@@ -121,10 +121,12 @@ public final class R {
         public static final int activity_register=0x7f030007;
         public static final int activity_userprofile=0x7f030008;
         public static final int activity_viewquestion=0x7f030009;
-        public static final int listviewanswer=0x7f03000a;
-        public static final int listviewfriendrequests=0x7f03000b;
-        public static final int listviewfriends=0x7f03000c;
-        public static final int listviewitem=0x7f03000d;
+        public static final int footer=0x7f03000a;
+        public static final int header=0x7f03000b;
+        public static final int listviewanswer=0x7f03000c;
+        public static final int listviewfriendrequests=0x7f03000d;
+        public static final int listviewfriends=0x7f03000e;
+        public static final int listviewitem=0x7f03000f;
     }
     public static final class menu {
         public static final int main=0x7f080000;
