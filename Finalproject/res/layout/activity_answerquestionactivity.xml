@@ -55,30 +55,35 @@
 
       </RelativeLayout>
       
-    <ListView
-        android:id="@+id/lvAnswers"
-        android:layout_width="fill_parent"
-        android:layout_height="252dp" >
-
-    </ListView>
+   
 
     <RelativeLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true">
       
+     <ListView
+        android:id="@+id/lvAnswers"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/etEnterAnswer" />
+
+      
     
       <EditText
-        android:id="@+id/etEnterAnswer"
+        android:id="@id/etEnterAnswer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
-        android:text="Hello There" >
+        android:layout_above="@+id/btnSubmitAnswer"
+        android:lines="2"
+        android:hint="Please enter an answer" >
+        
         
     </EditText>
 
      <Button
-          android:id="@+id/btnSubmitAnswer"
+          android:id="@id/btnSubmitAnswer"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_alignParentBottom="true"

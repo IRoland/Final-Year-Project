@@ -44,6 +44,8 @@ public class AnswerQuestionActivity extends Activity{
 	
 	private TextView tvQuestionTitleSection, tvQuestionSection,tvUserName,tvDateAsked;
 	
+	private ArrayAdapter<Answer> QuestionAnswersAdapter ;  
+	
 	
 	 // JSON element ids from repsonse of php script:
     private static final String TAG_SUCCESS = "success";
@@ -102,7 +104,7 @@ public class AnswerQuestionActivity extends Activity{
 		
 		new GetAnswers().execute();
 		
-		ArrayAdapter<Answer> QuestionAnswersAdapter = new AnswerArrayAdapter();
+		QuestionAnswersAdapter = new AnswerArrayAdapter();
 		
 		ListView questionAnswersList = (ListView) findViewById(R.id.lvAnswers);
 		
@@ -215,11 +217,14 @@ protected String doInBackground(String... args) {
 //Update Question list when response from server is received 
 @Override
 protected void onPostExecute(String result) {
-	// TODO Auto-generated method stub
 	super.onPostExecute(result);
-	for(Answer answer: reterievedAnswers)
+	for(Answer answer: reterievedAnswers){
 		questionAnswers.add(answer);
+	}
+	QuestionAnswersAdapter.notifyDataSetChanged(); 
+	
 			}
+		
 		}
 
 class PostAnswer extends AsyncTask<String, String, String> {
@@ -272,7 +277,14 @@ class PostAnswer extends AsyncTask<String, String, String> {
 		
 	}
 
-
+	@Override
+	protected void onPostExecute(String result) {
+		super.onPostExecute(result);
+		questionAnswers.clear();
+		etEnterAnswer.setText(null);
+		new GetAnswers().execute();
+		}
+	
 	}
 
 
