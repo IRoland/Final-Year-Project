@@ -16,6 +16,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,11 +55,14 @@ public class ViewUserProfileActivity extends Activity implements OnClickListener
 	 private static final String TAG_MESSAGE = "message";
 	 private static final String TAG_VALUES  = "userlist";
 	
-	 private static final String addFriendURl     = "http://192.168.56.1:1234/FinalYearApp/AddFriend.php";
-	 private static final String GetQuestionsURL  = "http://192.168.56.1:1234/FinalYearApp/askedQuestions.php";
-	 private static final String DELETEFRIEND_URL = "http://192.168.56.1:1234/FinalYearApp/deleteFriendRequest.php";
-	 private static final String CHECKIFFRIENDURL = "http://192.168.56.1:1234/FinalYearApp/checkIsFriend.php";
-	 private static final String sendInviteURl    = "http://192.168.56.1:1234/FinalYearApp/sendInvite.php";
+	 
+	 private static final String addFriendURl            = "http://192.168.56.1:1234/FinalYearApp/AddFriend.php";
+	 private static final String unFriendURl             = "http://192.168.56.1:1234/FinalYearApp/unFriend.php";
+	 private static final String GetQuestionsURL         = "http://192.168.56.1:1234/FinalYearApp/askedQuestions.php";
+	 private static final String DELETEFRIEND_URL        = "http://192.168.56.1:1234/FinalYearApp/deleteFriendRequest.php";
+	 private static final String CHECKIFFRIENDURL        = "http://192.168.56.1:1234/FinalYearApp/checkIsFriend.php";
+	 private static final String sendInviteURl           = "http://192.168.56.1:1234/FinalYearApp/sendInvite.php";
+	 private static final String getInviteResponseURl    = "http://192.168.56.1:1234/FinalYearApp/getInviteResponse.php";
 	 
 	@Override
 protected void onCreate(Bundle savedInstanceState) {
@@ -136,8 +140,7 @@ private void viewClickedQuestion() {
 		});
 		
 	}
-	
-	
+		
 private class QuestionArrayAdapter extends ArrayAdapter<Question>{
 		
 		public QuestionArrayAdapter(){
@@ -173,7 +176,7 @@ public void onClick(View v) {
 			 friendButtonText = btnAdd.getText().toString();
 			 if(friendButtonText.equals("Add")){
 				 new AddFriend().execute();
-				 btnAdd.setText("Unfriend");
+				 btnAdd.setText("Pending");
 			 }
 			 else if(friendButtonText.equals("Unfriend")){
 				 new UnFriend().execute();
@@ -185,6 +188,13 @@ public void onClick(View v) {
 			break;
 		case R.id.btnChallenge:
 				new ChallengeUser().execute();
+				
+				 Handler handler = new Handler(); 
+				    handler.postDelayed(new Runnable() { 
+				         public void run() { 
+				              new getInviteResponse().execute();
+				         } 
+				    }, 5000); 
 			break;
 		case R.id.btnChat:
 			//	new ChatWith().execute();
@@ -218,6 +228,7 @@ class AddFriend extends AsyncTask<String, String, String> {
         
         return null;
 	}
+
 	
 }
 
@@ -235,7 +246,7 @@ protected String doInBackground(String... args) {
         Log.d("request!", "starting");
         // getting product details by making HTTP requests
         JSONObject json = jsonParser.makeHttpRequest(
-        		DELETEFRIEND_URL, "POST", params);
+        		unFriendURl, "POST", params);
 
       
         return json.getString(TAG_MESSAGE);
@@ -287,14 +298,16 @@ protected void onPostExecute(Integer result) {
 	 //Change from Add to Unfriend if success equals 1
 	if(result == 1){
 	Toast.makeText(ViewUserProfileActivity.this, "Found Match", Toast.LENGTH_LONG).show();	
+	changeBtn(result);
 	}
 	else if(result == 0){
 	Toast.makeText(ViewUserProfileActivity.this, "No Match", Toast.LENGTH_LONG).show();
+	pendingFriendRequest();
 	}
 	else{
 	Toast.makeText(ViewUserProfileActivity.this, "Fuck all Found", Toast.LENGTH_LONG).show();	
 	}
-    changeBtn(result);
+    //changeBtn(result);
 	
 		}
 
@@ -365,6 +378,9 @@ protected void onPostExecute(String result) {
 class ChallengeUser extends AsyncTask<String, String, String> {
 
 
+
+
+
 	@Override
 	protected String doInBackground(String... args) {
      
@@ -374,11 +390,13 @@ class ChallengeUser extends AsyncTask<String, String, String> {
             params.add(new BasicNameValuePair("fromUsername", currentUsername));
             params.add(new BasicNameValuePair("toUsername", clickedUsername));
                         
-            Log.d("request!", "starting");
+            Log.d("request!", "sending Invite!");
             // getting product details by making HTTP request
             JSONObject json = jsonParser.makeHttpRequest(
             		sendInviteURl, "POST", params);
             
+            Log.d("Game Invite Sent!", json.toString());
+
             	return json.getString(TAG_MESSAGE);
 
         } catch (JSONException e) {
@@ -388,29 +406,97 @@ class ChallengeUser extends AsyncTask<String, String, String> {
         return null;
 	}
 	
-    protected void onPostExecute(String file_url) {      
+  /*  protected void onPostExecute(String file_url) {      
         if (file_url != null){
         	Toast.makeText(ViewUserProfileActivity.this, file_url, Toast.LENGTH_LONG).show();
         	pDialog = new ProgressDialog(ViewUserProfileActivity.this);
-            pDialog.setMessage("Waiting For" + " " + firstName + " " + secondName + " " + " to Accept");
+            pDialog.setMessage("Waiting for" + " " + firstName + " " + secondName + " " + " to accept");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();
         }
 
-    }
+    }*/
 	
 }
 
+class getInviteResponse extends AsyncTask<String, String, Integer> {
+
+	int success;
+	String message;
+
+@Override
+	protected void onPostExecute(Integer result) {
+		super.onPostExecute(result);
+		//pDialog.dismiss();
+		//Start a new Activity Depending on Response
+		  if(success == 1){
+		    	
+		    	//Start Game
+		    	Toast.makeText(ViewUserProfileActivity.this, "Start Game!", Toast.LENGTH_LONG).show();
+		    }else{
+		    	
+		    	//Cancel Request
+		    	Toast.makeText(ViewUserProfileActivity.this, "Cancel Game!!!!", Toast.LENGTH_LONG).show();
+		    	
+		    }
+		
+	}
+
+
+protected Integer doInBackground(String... args) {
+
+try {
+    // Building Parameters
+    List<NameValuePair> params = new ArrayList<NameValuePair>();
+    params.add(new BasicNameValuePair("challengerusername", currentUsername));
+    params.add(new BasicNameValuePair("challengedusername", clickedUsername));
+    
+    Log.d("request!", "Checking For Response");
+    // getting product details by making HTTP requests
+    JSONObject json = jsonParser.makeHttpRequest(
+    		getInviteResponseURl, "POST", params);
+    
+    success = json.getInt(TAG_SUCCESS);
+    message = json.getString(TAG_MESSAGE);
+    
+    if(success == 1 || message == "Retrieved Status of Invite"){   	
+    	//Start Game
+    	//Toast.makeText(ViewUserProfileActivity.this, "Start Game!", Toast.LENGTH_LONG).show();
+    }else{
+    	
+    	//Cancel Request
+    	//Toast.makeText(ViewUserProfileActivity.this, "Cancel Game!!!!", Toast.LENGTH_LONG).show();
+    	
+    }
+    
+    
+    return success;
+    
+} catch (JSONException e) {
+    e.printStackTrace();
+}
+
+return null;
+	}
+}
 
 public void changeBtn(int x){
 	if(x==1){
 		 btnAdd.setText("Unfriend");
 	 	}
-	
+	else if(x==0){
+		pendingFriendRequest();
+	}
 	 else{
 		 btnAdd.setText("Add");
 	 }
+	
+	
+}
+
+public void pendingFriendRequest(){
+	btnAdd.setText("Pending");
 }
 
 
