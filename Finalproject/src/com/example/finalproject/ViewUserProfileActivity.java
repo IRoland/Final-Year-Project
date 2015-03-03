@@ -279,10 +279,11 @@ protected Integer doInBackground(String... args) {
         JSONObject json = jsonParser.makeHttpRequest(
         		CHECKIFFRIENDURL, "POST", params);
         
-        success = json.getInt(TAG_SUCCESS);
+        success  = json.getInt(TAG_SUCCESS);
         
-        return success;
-        
+ 
+        	return success;
+
     } catch (JSONException e) {
         e.printStackTrace();
     }
@@ -300,8 +301,8 @@ protected void onPostExecute(Integer result) {
 	Toast.makeText(ViewUserProfileActivity.this, "Found Match", Toast.LENGTH_LONG).show();	
 	changeBtn(result);
 	}
-	else if(result == 0){
-	Toast.makeText(ViewUserProfileActivity.this, "No Match", Toast.LENGTH_LONG).show();
+	else if(result == 2){
+	Toast.makeText(ViewUserProfileActivity.this, "Pending Request", Toast.LENGTH_LONG).show();
 	pendingFriendRequest();
 	}
 	else{
@@ -406,17 +407,6 @@ class ChallengeUser extends AsyncTask<String, String, String> {
         return null;
 	}
 	
-  /*  protected void onPostExecute(String file_url) {      
-        if (file_url != null){
-        	Toast.makeText(ViewUserProfileActivity.this, file_url, Toast.LENGTH_LONG).show();
-        	pDialog = new ProgressDialog(ViewUserProfileActivity.this);
-            pDialog.setMessage("Waiting for" + " " + firstName + " " + secondName + " " + " to accept");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
-            pDialog.show();
-        }
-
-    }*/
 	
 }
 

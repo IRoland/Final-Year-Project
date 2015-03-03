@@ -5,11 +5,42 @@
     android:orientation="vertical">
 
     <!-- Main ListView Always give id value as list(@android:id/list)-->
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+           >
+    <TextView
+        android:id="@+id/tvFriendTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/FriendTitle" 
+        android:textSize="16sp"
+        android:textAllCaps="true"/>
+    
     <ListView
         android:id="@+id/lvFriendRequestsList"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
+        android:layout_height="200dp"
+        android:layout_below="@+id/tvFriendTitle" >
 
+    </ListView>
+    
+     <TextView
+        android:id="@+id/tvGameInviteTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/GameTitle" 
+        android:layout_below="@+id/lvFriendRequestsList"
+        android:textSize="16sp"
+        android:textAllCaps="true"/>
+     
+     <ListView
+        android:id="@+id/lvGameInvitesList"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvGameInviteTitle"
+        android:layout_alignParentBottom="true">
+     </ListView>
+    
+	</RelativeLayout>
 </LinearLayout>

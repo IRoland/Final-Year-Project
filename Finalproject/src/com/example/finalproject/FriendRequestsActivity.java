@@ -65,7 +65,7 @@ public class FriendRequestsActivity extends Activity{
 		
 	}
 	
-	private void viewUserProfile() {
+private void viewUserProfile() {
 
 		
 		lvFriendRequestsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -89,8 +89,6 @@ public class FriendRequestsActivity extends Activity{
 		});
 		}
 
-
-	
 private class FriendRequestsArrayAdapter extends ArrayAdapter<Friend> {
 
 		public FriendRequestsArrayAdapter(){
@@ -215,7 +213,6 @@ protected void onPostExecute(String result) {
 
 	}
 
-
 class AcceptFriendRequest extends AsyncTask<String, String, String> {
 
 protected String doInBackground(String... args) {
@@ -245,7 +242,6 @@ protected String doInBackground(String... args) {
 
 
 	}
-
 
 class DeleteFriendRequest extends AsyncTask<String, String, String> {
 

@@ -23,6 +23,8 @@
     <string name="Question">Type question here</string>
     <string name="bAskGroup">Ask Group</string>
     <string name="bAskPublic">Ask Public</string>
+    <string name="FriendTitle">Friend Requets</string>
+    <string name="GameTitle">Game Invites</string>
     
     <string name="spinner_title">Select Category</string>
     <string-array name="category_array">
@@ -46,12 +48,11 @@
      <string name="btnBlockUser">Block</string>
      <string name="tvAskedQ">Asked Questions</string>
      
-     
-     
      <string name="btnEdit">Edit</string>
      <string name="btnDelete">Delete</string>
      <string name="btnConfirm">Confirm</string>
-     
+     <string name="btnAccept">Accept</string>
+     <string name="btnDecline">Decline</string>
      
     
 </resources>

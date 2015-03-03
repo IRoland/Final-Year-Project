@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"  >
+    
+    
+    <ImageView
+        android:id="@+id/ivGameInviteProfileIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/profilepic_icon" />
+
+    <TextView
+        android:id="@+id/tvGameInviteName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/ivGameInviteProfileIcon"
+        android:textSize="16sp"
+        android:text="TextView" />
+
+        <Button
+            android:id="@+id/btnRequestAccept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tvGameInviteName"
+            android:layout_below="@+id/tvGameInviteName"
+            android:layout_alignBottom="@+id/ivGameInviteProfileIcon"
+            android:background="@null"
+            android:text="@string/btnAccept" />
+
+         <Button
+             android:id="@+id/btnRequestDecline"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignBottom="@+id/ivGameInviteProfileIcon"
+             android:layout_toRightOf="@+id/tvGameInviteName"
+             android:layout_alignTop="@+id/btnRequestAccept"
+             android:background="@null"
+             android:text="@string/btnDecline" />
+
+</RelativeLayout>

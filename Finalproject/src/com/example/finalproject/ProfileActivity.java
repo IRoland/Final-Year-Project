@@ -81,6 +81,8 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
     //JSON parser class
     JSONParser jsonParser = new JSONParser();
     
+    JSONParser jsonParser1 = new JSONParser();
+    
     //To testing on your device
     //Put your local ip instead,
     
@@ -88,11 +90,14 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
     List<notificationHolder> notificationList2 = new ArrayList<notificationHolder>();
     
     //testing on Emulator:
-    //When testing on GenyMotion Use ip : private static final String LOGIN_URL = "http://192.168.56.1:1234/webservice/index2.php"
+    //When testing on GenyMotion Use ip: private static final String LOGIN_URL = "http://192.168.56.1:1234/webservice/index2.php"
     //When using emulator use : private static final String LOGIN_URL = "http://10.0.2.2:1234/webservice/index2.php"
-    private static final String LOGIN_URL = "http://192.168.56.1:1234/FinalYearApp/addQuestion.php";
-    private static final String GET_NOTIFICATIONS_URL = "http://192.168.56.1:1234/FinalYearApp/getNotifications.php";
-  
+
+      private static final String LOGIN_URL = "http://192.168.56.1:1234/FinalYearApp/addQuestion.php";
+      private static final String GET_NOTIFICATIONS_URL = "http://192.168.56.1:1234/FinalYearApp/getNotifications.php";
+      private static final String GET_GAMEINVITES_URL = "http://192.168.56.1:1234/FinalYearApp/getGameInvites.php";
+
+    
    
     //testing from a real server:
     //private static final String LOGIN_URL = "http://www.yourdomain.com/webservice/login.php";
@@ -101,6 +106,10 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_MESSAGE = "message";
     private static final String TAG_VALUES  = "userlist";
+    
+    private static final String TAG_SUCCESS1 = "success";
+    private static final String TAG_MESSAGE1 = "message";
+    private static final String TAG_VALUES1 = "userlist";
 
    // For use with the camera
 	protected static final int SELECT_FILE = 0;
@@ -406,8 +415,8 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 			
 	}
 	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle presses on the action bar items
 	    switch (item.getItemId()) {
 	        case R.id.action_friends:
@@ -430,8 +439,7 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 	    }
 	}
 	
-	
-	public void createNotification(int notiID) {
+public void createNotification(int notiID) {
 		    // Prepare intent which is triggered if the
 		    // notification is selected
 			// User new Intent() to not start an intent on pending intent.
@@ -456,27 +464,55 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 
 		  }
 	
+public void createGameInviteNotification(int notiID) {
+	    // Prepare intent which is triggered if the
+	    // notification is selected
+		// User new Intent() to not start an intent on pending intent.
+	    Intent viewIntent = new Intent(this, FriendRequestsActivity.class);
+	    viewIntent.putExtra("username", username);
+	    	
+	    PendingIntent vIntent = PendingIntent.getActivity(this, 0, viewIntent, 0);
+
+	    // Build notification
+	    Notification noti = new Notification.Builder(this)
+	        .setContentTitle("Game Invite")
+	        .setContentText("You have " + notiID + " Pending Game Invites(s)...").setSmallIcon(R.drawable.profilepic_icon)
+	        .setContentIntent(vIntent)
+	        .addAction(0, "View Notifications", vIntent)
+	        .build();
+	    NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+	    
+	    // hide the notification after its selected
+	    noti.flags |= Notification.FLAG_AUTO_CANCEL;
+
+	    notificationManager.notify(notiID, noti);
+
+	  }
 	
-	class CheckForNotifications extends AsyncTask<String, String, String> {
+class CheckForNotifications extends AsyncTask<String, String, String> {
 
 		@Override
 		protected String doInBackground(String... args) {
 			
 			 // Check for success tag
-            int success;
-			JSONArray results,jArray;
-			String message;
-			String first_names = "";
-			String second_names = "";
+            int success,success2;
+			JSONArray results,results2;
+			String message,message2;
+		
 
             try {
                 // Building Parameters
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
                 params.add(new BasicNameValuePair("Username", username));
+
                 
                 // getting product details by making HTTP requests
                 JSONObject json = jsonParser.makeHttpRequest(
                        GET_NOTIFICATIONS_URL, "POST", params);
+                
+                // getting product details by making HTTP requests
+                JSONObject gameInvite = jsonParser1.makeHttpRequest(
+                		GET_GAMEINVITES_URL, "POST", params);
  
                 // check your log for json response
                 Log.d("Getting notifications", json.toString());
@@ -485,20 +521,35 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
                 success = json.getInt(TAG_SUCCESS);
                 message = json.getString(TAG_MESSAGE);
                 results = json.getJSONArray(TAG_VALUES);
+                
+                success2 = gameInvite.getInt(TAG_SUCCESS1);
+                message2 = gameInvite.getString(TAG_MESSAGE1);
+                results2 = gameInvite.getJSONArray(TAG_VALUES1); 
 
-                createNotification(results.length());
+                Log.d("Success value is equal to:" + success2, gameInvite.toString());
                 
-                
-                if (success == 1) {
+                //For Friend Requests 
+                if (success == 1 || success2 == 2) {
                 	Log.d("Success!", json.toString());
-                	
+                  createNotification(results.length());
+                  createGameInviteNotification(results2.length());
                     
                 	return json.getString(TAG_MESSAGE);
-                }else{
+                }
+            /*    else if (success == 2){
+                	Log.d("Success Found a Game invite!", gameInvite.toString());
+                	createGameInviteNotification(results2.length());
+                      
+                  	
+                }*/
+                else{
                 	Log.d("Failed!", json.getString(TAG_MESSAGE));
-                	return json.getString(TAG_MESSAGE);
+                	return gameInvite.getString(TAG_MESSAGE);
                 	
                 }
+                
+                
+                
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -509,5 +560,7 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 		
 		
 	}
+	
+	
 	
 }
