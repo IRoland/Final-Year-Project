@@ -26,6 +26,7 @@
             android:layout_alignLeft="@+id/tvGameInviteName"
             android:layout_below="@+id/tvGameInviteName"
             android:layout_alignBottom="@+id/ivGameInviteProfileIcon"
+            android:textSize="12sp"
             android:background="@null"
             android:text="@string/btnAccept" />
 
@@ -36,6 +37,7 @@
              android:layout_alignBottom="@+id/ivGameInviteProfileIcon"
              android:layout_toRightOf="@+id/tvGameInviteName"
              android:layout_alignTop="@+id/btnRequestAccept"
+             android:textSize="12sp"
              android:background="@null"
              android:text="@string/btnDecline" />
 

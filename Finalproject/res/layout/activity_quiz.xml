@@ -18,7 +18,7 @@
             android:src="@drawable/profilepic_icon" />
 
         <ImageView
-            android:id="@+id/ivPlyaer2"
+            android:id="@+id/ivPlayer2"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/tvPlayer1Name"
             android:layout_alignBottom="@+id/tvPlayer1Name"
-            android:layout_toLeftOf="@+id/ivPlyaer2"
+            android:layout_toLeftOf="@+id/ivPlayer2"
             android:text="TextView" />
 
         <TextView

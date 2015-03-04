@@ -84,7 +84,7 @@ public final class R {
         public static final int ivAnswerIcon=0x7f09003e;
         public static final int ivGameInviteProfileIcon=0x7f090048;
         public static final int ivPlayer1=0x7f09001e;
-        public static final int ivPlyaer2=0x7f09001f;
+        public static final int ivPlayer2=0x7f09001f;
         public static final int ivProfileIcon=0x7f090045;
         public static final int ivProfilePic=0x7f090015;
         public static final int ivQuestionIcon=0x7f09004c;

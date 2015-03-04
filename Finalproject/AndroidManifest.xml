@@ -73,6 +73,11 @@
             android:label="@string/app_name" >
         </activity>
         
+        <activity
+            android:name="com.example.finalproject.QuizActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
     </application>
 
 </manifest>

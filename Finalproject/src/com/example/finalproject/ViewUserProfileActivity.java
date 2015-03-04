@@ -378,10 +378,6 @@ protected void onPostExecute(String result) {
 
 class ChallengeUser extends AsyncTask<String, String, String> {
 
-
-
-
-
 	@Override
 	protected String doInBackground(String... args) {
      
@@ -423,7 +419,11 @@ class getInviteResponse extends AsyncTask<String, String, Integer> {
 		  if(success == 1){
 		    	
 		    	//Start Game
-		    	Toast.makeText(ViewUserProfileActivity.this, "Start Game!", Toast.LENGTH_LONG).show();
+		    //	Toast.makeText(ViewUserProfileActivity.this, "Start Game!", Toast.LENGTH_LONG).show(); 	
+		    	Intent StartQuiz = new Intent(ViewUserProfileActivity.this, QuizActivity.class);
+		    	StartQuiz.putExtra("username", currentUsername);
+		    	StartQuiz.putExtra("challengerusername", clickedUsername);
+		    	startActivity(StartQuiz);
 		    }else{
 		    	
 		    	//Cancel Request
