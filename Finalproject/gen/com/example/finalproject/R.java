@@ -57,8 +57,8 @@ public final class R {
         public static final int btnAddUser=0x7f090035;
         public static final int btnAnswerA=0x7f090025;
         public static final int btnAnswerB=0x7f090026;
+        public static final int btnAnswerC=0x7f090027;
         public static final int btnAnswerD=0x7f090028;
-        public static final int btnAnswerc=0x7f090027;
         public static final int btnBlockUser=0x7f090036;
         public static final int btnChallenge=0x7f090034;
         public static final int btnChat=0x7f090033;

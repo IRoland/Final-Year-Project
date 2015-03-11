@@ -105,7 +105,7 @@
                   		 android:orientation="horizontal" >
 
                     <Button
-                        android:id="@+id/btnAnswerc"
+                        android:id="@+id/btnAnswerC"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"/>

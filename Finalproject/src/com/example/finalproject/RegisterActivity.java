@@ -191,7 +191,7 @@ public class RegisterActivity extends Activity implements OnClickListener{
 			if(string.isEmpty()){
 				return false;
 			}
-			return true;
+				return true;
 		}
 		
 		private boolean isPasswordValid(String password) {

@@ -188,11 +188,10 @@ public void onClick(View v) {
 			break;
 		case R.id.btnChallenge:
 				new ChallengeUser().execute();
-				
 				 Handler handler = new Handler(); 
-				    handler.postDelayed(new Runnable() { 
-				         public void run() { 
-				              new getInviteResponse().execute();
+				 handler.postDelayed(new Runnable() { 
+			public void run() { 
+				 new getInviteResponse().execute();
 				         } 
 				    }, 5000); 
 			break;

@@ -529,27 +529,19 @@ class CheckForNotifications extends AsyncTask<String, String, String> {
                 Log.d("Success value is equal to:" + success2, gameInvite.toString());
                 
                 //For Friend Requests 
-                if (success == 1 || success2 == 2) {
+                if (success == 1) {
                 	Log.d("Success!", json.toString());
-                  createNotification(results.length());
-                  createGameInviteNotification(results2.length());
-                    
-                	return json.getString(TAG_MESSAGE);
+                    createNotification(results.length());
                 }
-            /*    else if (success == 2){
+                if (success2 == 2){
                 	Log.d("Success Found a Game invite!", gameInvite.toString());
-                	createGameInviteNotification(results2.length());
-                      
-                  	
-                }*/
+                	createGameInviteNotification(results2.length()); 	
+                }
                 else{
                 	Log.d("Failed!", json.getString(TAG_MESSAGE));
                 	return gameInvite.getString(TAG_MESSAGE);
-                	
                 }
-                
-                
-                
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
