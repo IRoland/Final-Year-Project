@@ -57,6 +57,13 @@
             android:layout_alignRight="@+id/tvPlayer2Name"
             android:layout_below="@+id/tvPlayer2Name"
             android:text="TextView" />
+
+        <TextView
+            android:id="@+id/tvTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 		
         </RelativeLayout>
         
@@ -88,13 +95,13 @@
 
                     <Button
                         android:id="@+id/btnAnswerA"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"/>
 
                     <Button
                         android:id="@+id/btnAnswerB"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"/>
                 </LinearLayout>
@@ -106,13 +113,13 @@
 
                     <Button
                         android:id="@+id/btnAnswerC"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"/>
 
                     <Button
                         android:id="@+id/btnAnswerD"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"/>
                 </LinearLayout>

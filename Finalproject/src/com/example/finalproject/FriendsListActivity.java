@@ -22,12 +22,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class FriendsListActivity extends Activity{
+public class FriendsListActivity extends Activity {
 	
 	String Username;
 
 	
-	 // JSON element ids from repsonse of php script:
+	// JSON element ids from repsonse of php script:
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_MESSAGE = "message";
     private static final String TAG_VALUES  = "userlist";

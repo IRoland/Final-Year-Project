@@ -416,7 +416,6 @@ class getInviteResponse extends AsyncTask<String, String, Integer> {
 		//pDialog.dismiss();
 		//Start a new Activity Depending on Response
 		  if(success == 1){
-		    	
 		    	//Start Game
 		    //	Toast.makeText(ViewUserProfileActivity.this, "Start Game!", Toast.LENGTH_LONG).show(); 	
 		    	Intent StartQuiz = new Intent(ViewUserProfileActivity.this, QuizActivity.class);

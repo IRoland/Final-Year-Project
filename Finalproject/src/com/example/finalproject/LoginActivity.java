@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +37,8 @@ public class LoginActivity extends Activity implements OnClickListener{
     
     //php login script location:
     
+    //One time Login
+
   
     //To testing on your device
     //Put your local ip instead,
@@ -54,6 +57,8 @@ public class LoginActivity extends Activity implements OnClickListener{
     //JSON element ids from repsonse of php script:
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_MESSAGE = "message";
+    
+    Constants con;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,17 +72,26 @@ public class LoginActivity extends Activity implements OnClickListener{
 		
 		//setup buttons
 		bSubmit = (Button)findViewById(R.id.bSubmit);
-		bReg = (Button)findViewById(R.id.bReg);
+		bReg    = (Button)findViewById(R.id.bReg);
 
 		
 		//register listeners
 		bSubmit.setOnClickListener(this);
 		bReg.setOnClickListener(this);
+
+		SharedPreferences settings = getSharedPreferences(Constants.LOGIN_INFO,0);
 		
+		boolean hasLoggedIn = settings.getBoolean("hasLoggedIn", false);
 		
-		//Just For Quick LOGIN for Testing REMOVE LATER
-		user.setText("Admin");
-		pass.setText("Pass");
+		String username = settings.getString("username", null);
+		
+		if(hasLoggedIn){
+			Intent profile = new Intent(LoginActivity.this, ProfileActivity.class);	
+			profile.putExtra("Username",username);	
+			startActivity(profile);
+			finish();
+		} 
+	
 	
 		
 	}
@@ -142,9 +156,15 @@ public class LoginActivity extends Activity implements OnClickListener{
                 success = json.getInt(TAG_SUCCESS);
                 if (success == 1) {
                 	Log.d("Login Successful!", json.toString());
+                	SharedPreferences settings = getSharedPreferences(Constants.LOGIN_INFO,0);
+                    SharedPreferences.Editor editor = settings.edit();
+                	editor.putString("username", username);
+                	editor.putBoolean("hasLoggedIn", true);
+            		editor.commit();
                 	Intent profile = new Intent(LoginActivity.this, ProfileActivity.class);
-                	profile.putExtra("Username", username );	
+                	profile.putExtra("Username", username);	
     				startActivity(profile);
+    				finish();
     				
                 	return json.getString(TAG_MESSAGE);
                 }else{
@@ -167,6 +187,7 @@ public class LoginActivity extends Activity implements OnClickListener{
             pDialog.dismiss();
             if (file_url != null){
             	Toast.makeText(LoginActivity.this, file_url, Toast.LENGTH_LONG).show();
+            	
             }
  
         }

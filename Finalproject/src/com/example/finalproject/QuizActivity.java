@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,11 +27,18 @@ public class QuizActivity extends Activity{
 	
 	String Username,ChallengerUsername;
 	
-	private TextView QuestionSection, Player1Name,Player1Score,Player2Name,Player2Score;
+	private TextView QuestionSection, Player1Name, Player1Score, Player2Name, Player2Score, Timer;
 	
 	private ImageView Player1Pic,Player2Pic;
 	
+	int ScorePlayer1,ScorePlayer2;
+	
 	private Button Answer_A,Answer_B,Answer_C,Answer_D;
+	
+	private final long startTime = 11000;
+	private final long interval = 1000;
+	
+	private QuizCountDownTimer countDownTimer;
 	
 	//Counter for Current Question
 	int Question_No,Randomizer;
@@ -45,7 +53,9 @@ public class QuizActivity extends Activity{
     List<QuizQuestion> QuizQuestions = new ArrayList<QuizQuestion>();
     
     private static final String GetQuizQuestionsURL = "http://192.168.56.1:1234/FinalYearApp/quizQuestions.php";
-	
+    private static final String GetScoreURL         = "http://192.168.56.1:1234/FinalYearApp/getScore.php";
+    private static final String SendScoreURL        = "http://192.168.56.1:1234/FinalYearApp/sendScore.php";
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -60,6 +70,8 @@ public class QuizActivity extends Activity{
 		Player2Name  = (TextView) findViewById(R.id.tvPlayer2Name);
 		Player2Score = (TextView) findViewById(R.id.tvPlayer2Score);
 		
+		Timer        = (TextView) findViewById(R.id.tvTimer);
+		
 		Player1Pic   = (ImageView) findViewById(R.id.ivPlayer1);
 		Player2Pic   = (ImageView) findViewById(R.id.ivPlayer2);
 		
@@ -68,7 +80,8 @@ public class QuizActivity extends Activity{
 		Answer_C     = (Button) findViewById(R.id.btnAnswerC);
 		Answer_D     = (Button) findViewById(R.id.btnAnswerD);
 		
-
+		countDownTimer = new QuizCountDownTimer(startTime, interval);
+		
 		Username = getIntent().getExtras().getString("username");	
 		ChallengerUsername = getIntent().getExtras().getString("challengerusername");		
 
@@ -79,7 +92,6 @@ public class QuizActivity extends Activity{
 		Player2Score.setText("0");
 		
 		new GetQuizQuestions().execute();
-		
 		
 	}
 	
@@ -98,44 +110,44 @@ public void askQuestion(int index,int randomizer){
 	//A
 	if(randomizer == 1){
 		Answer_A.setText(question.getCorrectAnswer());
-	}else if(randomizer == 2){
-		Answer_A.setText(question.getChoice2());
-	}else if(randomizer == 3){
+	}if(randomizer == 2){
+		Answer_A.setText(question.getChoice4());
+	}if(randomizer == 3){
 		Answer_A.setText(question.getChoice3());
-	}else if(randomizer == 4){
+	}if(randomizer == 4){
 		Answer_A.setText(question.getChoice4());
 	}
 	
 	//B
 	if(randomizer == 2){
 		Answer_B.setText(question.getCorrectAnswer());
-	}else if(randomizer == 1){
+	}if(randomizer == 1){
 		Answer_B.setText(question.getChoice2());
-	}else if(randomizer == 3){
-		Answer_B.setText(question.getChoice3());
-	}else if(randomizer == 4){
+	}if(randomizer == 3){
 		Answer_B.setText(question.getChoice4());
+	}if(randomizer == 4){
+		Answer_B.setText(question.getChoice3());
 	}
 	
 	//C
 	if(randomizer == 3){
 		Answer_C.setText(question.getCorrectAnswer());
-	}else if(randomizer == 2){
-		Answer_C.setText(question.getChoice2());
-	}else if(randomizer == 1){
+	}if(randomizer == 2){
 		Answer_C.setText(question.getChoice3());
-	}else if(randomizer == 4){
-		Answer_C.setText(question.getChoice4());
+	}if(randomizer == 1){
+		Answer_C.setText(question.getChoice3());
+	}if(randomizer == 4){
+		Answer_C.setText(question.getChoice2());
 	}
 	
 	//D
 	if(randomizer == 4){
 		Answer_D.setText(question.getCorrectAnswer());
-	}else if(randomizer == 2){
+	}if(randomizer == 2){
 		Answer_D.setText(question.getChoice2());
-	}else if(randomizer == 3){
-		Answer_D.setText(question.getChoice3());
-	}else if(randomizer == 1){
+	}if(randomizer == 3){
+		Answer_D.setText(question.getChoice2());
+	}if(randomizer == 1){
 		Answer_D.setText(question.getChoice4());
 	}
 	
@@ -144,10 +156,12 @@ public void askQuestion(int index,int randomizer){
 		@Override
 		public void onClick(View v) {
 			if(Answer_A.getText().toString() == question.getCorrectAnswer()){
-				//new upDateScore().execute(); 
-				getIndexAndRandomizer();
+				countDownTimer.cancel();
+				addScore();
+				new GetScoresAndUpdate().execute();
 			}else{
-				getIndexAndRandomizer();
+				countDownTimer.cancel();
+				new GetScoresAndUpdate().execute();
 			}
 		}
 		
@@ -158,10 +172,12 @@ public void askQuestion(int index,int randomizer){
 		@Override
 		public void onClick(View v) {
 			if(Answer_B.getText().toString() == question.getCorrectAnswer()){
-				//new upDateScore().execute(); 
-				getIndexAndRandomizer();
+				countDownTimer.cancel();
+				addScore();
+				new GetScoresAndUpdate().execute();
 			}else{
-				getIndexAndRandomizer();
+				countDownTimer.cancel();
+				new GetScoresAndUpdate().execute();
 			}
 		}
 		
@@ -172,10 +188,12 @@ public void askQuestion(int index,int randomizer){
 		@Override
 		public void onClick(View v) {
 			if(Answer_C.getText().toString() == question.getCorrectAnswer()){
-				//new upDateScore().execute(); 
-				getIndexAndRandomizer();
+				 countDownTimer.cancel();
+				addScore();
+				new GetScoresAndUpdate().execute();
 			}else{
-				getIndexAndRandomizer();
+				countDownTimer.cancel();
+				new GetScoresAndUpdate().execute();
 			}
 		}
 		
@@ -186,19 +204,22 @@ public void askQuestion(int index,int randomizer){
 		@Override
 		public void onClick(View v) {
 			if(Answer_D.getText().toString() == question.getCorrectAnswer()){
-				//new upDateScore().execute(); 
-				getIndexAndRandomizer();
+				 countDownTimer.cancel();
+				 addScore();
+				 new GetScoresAndUpdate().execute();
 			}else{
-				getIndexAndRandomizer();
+				countDownTimer.cancel();
+				new GetScoresAndUpdate().execute();
 			}
 		}
 		
 	});
 	
 	}else{
-		
-		//QuizOver
+		countDownTimer.cancel();
+		//QuizOver Start new Intent Finish this one
 		Toast.makeText(this, "GameOver", Toast.LENGTH_LONG).show();
+		
 	}
 	
 }
@@ -209,6 +230,36 @@ public void getIndexAndRandomizer(){
     int randomNum = rand.nextInt((max - min) + 1) + min;
 	askQuestion(Question_No, randomNum);
 	Question_No++;
+	countDownTimer.start();
+}
+
+// CountDownTimer class
+public class QuizCountDownTimer extends CountDownTimer
+	{
+		public QuizCountDownTimer(long startTime, long interval)
+			{
+				super(startTime, interval);
+			}
+
+		@Override
+		public void onFinish()
+			{
+				getIndexAndRandomizer();
+			}
+
+		@Override
+		public void onTick(long millisUntilFinished)
+			{
+				Timer.setText("" + millisUntilFinished / 1000);
+			}
+	}
+
+public void addScore(){
+
+	ScorePlayer1 += 10;
+	Player1Score.setText(""+ScorePlayer1);
+	getIndexAndRandomizer();
+	
 }
 
 class GetQuizQuestions extends AsyncTask<String, String, String> {
@@ -287,7 +338,62 @@ class GetQuizQuestions extends AsyncTask<String, String, String> {
 	
 	}
 
+class GetScoresAndUpdate extends AsyncTask<String, String, Integer> {
+	
+	int player2Score;
+	
+protected Integer doInBackground(String... args) {
+	
+	int success;
+	JSONArray results;
+	String message;
+	
+	String Score  = Player1Score.getText().toString();
+	
+    try {
+        // Building Parameters
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("Username", Username));
+        params.add(new BasicNameValuePair("ChallengerUsername", ChallengerUsername));
+        params.add(new BasicNameValuePair("Score", Score));
 
+ 
+        // getting product details by making HTTP requests
+        JSONObject json = jsonParser.makeHttpRequest(
+        		GetScoreURL, "POST", params);
+
+
+        //Json tags
+        success = json.getInt(TAG_SUCCESS);
+        message = json.getString(TAG_MESSAGE);
+        results = json.getJSONArray(TAG_VALUES);
+       
+ 
+        JSONObject json_data=null;
+       
+        json_data = results.getJSONObject(0);
+        player2Score=json_data.getInt("Player2Score");
+
+        return json.getInt(TAG_SUCCESS);
+   
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
+
+	return null;
+		}
+
+	//Update Question list when response from server is received 
+	@Override
+	protected void onPostExecute(Integer result) {
+	// TODO Auto-generated method stub
+	super.onPostExecute(result);
+		Player2Score.setText(""+player2Score);
+		getIndexAndRandomizer();
+	}
+
+
+}
 	
 
 }

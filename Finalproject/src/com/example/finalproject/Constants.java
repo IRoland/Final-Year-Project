@@ -2,6 +2,9 @@ package com.example.finalproject;
 
 public class Constants {
 	
+	public static final String PREFS_NAME = "MyPrefsFile";
+	public static final String LOGIN_INFO = "LoginDetails";
+	
 	private String username;
 
 	public Constants(String username) {
@@ -17,4 +20,6 @@ public class Constants {
 		this.username = username;
 	}
 
+
+	
 }

@@ -14,21 +14,27 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ActionBar;
+import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader.TileMode;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -36,11 +42,14 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -48,6 +57,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -87,18 +97,15 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
     //Put your local ip instead,
     
     List<Friend> notificationList = new ArrayList<Friend>();
-    List<notificationHolder> notificationList2 = new ArrayList<notificationHolder>();
     
     //testing on Emulator:
     //When testing on GenyMotion Use ip: private static final String LOGIN_URL = "http://192.168.56.1:1234/webservice/index2.php"
     //When using emulator use : private static final String LOGIN_URL = "http://10.0.2.2:1234/webservice/index2.php"
 
-      private static final String LOGIN_URL = "http://192.168.56.1:1234/FinalYearApp/addQuestion.php";
-      private static final String GET_NOTIFICATIONS_URL = "http://192.168.56.1:1234/FinalYearApp/getNotifications.php";
-      private static final String GET_GAMEINVITES_URL = "http://192.168.56.1:1234/FinalYearApp/getGameInvites.php";
+    private static final String LOGIN_URL = "http://192.168.56.1:1234/FinalYearApp/addQuestion.php";
+    private static final String GET_NOTIFICATIONS_URL = "http://192.168.56.1:1234/FinalYearApp/getNotifications.php";
+    private static final String GET_GAMEINVITES_URL = "http://192.168.56.1:1234/FinalYearApp/getGameInvites.php";
 
-    
-   
     //testing from a real server:
     //private static final String LOGIN_URL = "http://www.yourdomain.com/webservice/login.php";
     
@@ -117,12 +124,25 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 	
 	RoundImage roundedImage;
 	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
 	
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
 		
+		//For Clearing all One Time Logins
+	   /*SharedPreferences settings = getSharedPreferences(Constants.LOGIN_INFO,0);
+         SharedPreferences.Editor editor = settings.edit();
+    	 editor.clear();
+		 editor.commit(); */
+	
+		//For clearing a specific pref
+	  /*SharedPreferences settings = getSharedPreferences(Constants.PREFS_NAME,0);
+        SharedPreferences.Editor editor = settings.edit();
+    	editor.remove("hasLoggedIn");
+		editor.commit(); */
+
 		// setup input fields
 		question   = (EditText) findViewById(R.id.etQuestion);
 		title      = (EditText) findViewById(R.id.etTitle);
@@ -152,7 +172,6 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
         //Check for any notifications
         new CheckForNotifications().execute();
 		
-		
 		// Pass username from Login
 		username = getIntent().getExtras().getString("Username");
 		
@@ -179,12 +198,14 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 	    Bitmap bm = BitmapFactory.decodeResource(getResources(),R.drawable.profilepic_icon);
         roundedImage = new RoundImage(bm);
         profilepic.setImageDrawable(roundedImage);
+        
+
 		
 	}
 	
 	//When a certain button is pressed 
-	@Override
-	public void onClick(View v) {
+@Override
+public void onClick(View v) {
 				switch (v.getId()) {
 				case R.id.bAskGroup:	
 					break;
@@ -198,17 +219,16 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 				}
 	}
 	
-	@Override
-	public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
+
+@Override
+public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
 		 // On selecting a spinner item
 		category = parent.getItemAtPosition(position).toString();
 	
  
 	}
-	
-
 	//Post the Question to the Public
-	class PostPublic extends AsyncTask<String, String, String> {
+class PostPublic extends AsyncTask<String, String, String> {
 
 		@Override
 		protected String doInBackground(String... args) {
@@ -248,6 +268,7 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
                 
                 if (success == 1) {
                 	Log.d("Question Posted!", json.toString());
+                	
                     Intent askedQuestions = new Intent(ProfileActivity.this, AskedQuestionsActivity.class);
                     askedQuestions.putExtra("username", username);
     				startActivity(askedQuestions);
@@ -263,6 +284,14 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
           
  
             return null;
+			
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			question.setText(null);
+        	title.setText(null);
 			
 		}
 
@@ -287,13 +316,12 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 
 	}
 
-	@Override
-	public void onNothingSelected(AdapterView<?> arg0) {
+@Override
+public void onNothingSelected(AdapterView<?> arg0) {
 			
 	}
-	
 	//Select How to set image
-	private void selectImage() {
+private void selectImage() {
 		final CharSequence[] items = { "Take Photo", "Choose from Library",
 				"Cancel" };
 		
@@ -325,9 +353,8 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 		builder.show();
 	}
 	
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK) {
 			if (requestCode == REQUEST_CAMERA) {
@@ -397,7 +424,7 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 		}
 	}
 	
-	public String getPath(Uri uri, Activity activity) {
+public String getPath(Uri uri, Activity activity) {
 		String[] projection = { MediaColumns.DATA };
 		Cursor cursor = activity.managedQuery(uri, projection, null, null, null);
 		int column_index = cursor.getColumnIndexOrThrow(MediaColumns.DATA);
@@ -405,9 +432,8 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 		return cursor.getString(column_index);
 	}
 
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
 		
 		MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.main_activity_actions, menu);
@@ -419,20 +445,29 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle presses on the action bar items
 	    switch (item.getItemId()) {
+	    case R.id.action_home:
+		         Intent home = new Intent(ProfileActivity.this, ProfileActivity.class);
+		         home.putExtra("Username", username);
+		         startActivity(home);
+	            	return true;
 	        case R.id.action_friends:
-	         Intent friendsList = new Intent(ProfileActivity.this, FriendsListActivity.class);
-	         friendsList.putExtra("username", username);
-	         startActivity(friendsList);
+		         Intent friendsList = new Intent(ProfileActivity.this, FriendsListActivity.class);
+		         friendsList.putExtra("username", username);
+		         startActivity(friendsList);
 	            	return true;
 	        case R.id.action_askedQuestions:
-	        	Intent askedQuestions = new Intent(ProfileActivity.this, AskedQuestionsActivity.class);
-	        	askedQuestions.putExtra("username", username);
-	        	startActivity(askedQuestions);
+	        	 Intent askedQuestions = new Intent(ProfileActivity.this, AskedQuestionsActivity.class);
+	        	 askedQuestions.putExtra("username", username);
+	        	 startActivity(askedQuestions);
 	        		return true;
 	        case R.id.action_Notifications:
-	        	Intent notifications = new Intent(ProfileActivity.this, FriendRequestsActivity.class);
-	        	notifications.putExtra("username", username);
-	        	startActivity(notifications);
+	        	 Intent notifications = new Intent(ProfileActivity.this, FriendRequestsActivity.class);
+	        	 notifications.putExtra("username", username);
+	        	 startActivity(notifications);
+	        		return true;
+	        case R.id.action_settings:
+	        	 Intent settings = new Intent(this, SettingsActivity.class);
+	        	 startActivity(settings);
 	        		return true;
 	        default:
 	            return super.onOptionsItemSelected(item);

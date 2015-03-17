@@ -366,6 +366,7 @@ protected String doInBackground(String... args) {
        AcceptQuiz.putExtra("username", Username);
        AcceptQuiz.putExtra("challengerusername", args[0]);
        startActivity(AcceptQuiz);
+       finish();
 
       
         return json.getString(TAG_MESSAGE);

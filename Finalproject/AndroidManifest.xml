@@ -59,7 +59,7 @@
         </activity>
         
           <activity
-            android:name="com.example.finalproject.NotificationReceiverActivity"
+            android:name="com.example.finalproject.SettingsActivity"
             android:label="@string/app_name" >
         </activity>
         
@@ -78,6 +78,7 @@
             android:label="@string/app_name" >
         </activity>
         
+  
     </application>
 
 </manifest>

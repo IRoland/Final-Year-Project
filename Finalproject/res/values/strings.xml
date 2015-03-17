@@ -38,9 +38,23 @@
 	        <item>Science</item>
     </string-array>
     
+    <string-array name="Navigation_array">
+	        <item>Home</item>
+	        <item>Questions</item>
+	        <item>Friends</item>
+	        <item>Notifications</item>
+	        <item>Messages</item>
+	        <item>Users</item>
+	        <item>Settings</item>
+    </string-array>
+     <string name="action_home">Home</string>
+     <string name="action_askedQuestions">Questions</string>
      <string name="action_friends">Friends</string>
-     <string name="action_askedQuestions">My Questions</string>
      <string name="action_Notifications">Notifications</string>
+     <string name="action_Messages">Messages</string>
+     <string name="action_users">Users</string>
+     
+     
      
      <string name="btnChat">Chat</string>
      <string name="btnChallenge">Challenge</string>

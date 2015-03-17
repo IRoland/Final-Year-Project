@@ -1,24 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     
+    <item android:id="@+id/action_home"
+         	 android:title="@string/action_home"
+         	 android:showAsAction="never" />
+
+    <item android:id="@+id/action_askedQuestions"
+         	 android:title="@string/action_askedQuestions"
+         	 android:icon="@drawable/ic_action_email"
+         	 android:showAsAction="never" />
+    
        <item android:id="@+id/action_friends"
          	 android:title="@string/action_friends"
          	 android:icon="@drawable/ic_action_person"
-         	 android:showAsAction="always" />
-       
-       <item android:id="@+id/action_askedQuestions"
-         	 android:title="@string/action_askedQuestions"
-         	 android:icon="@drawable/ic_action_email"
-         	 android:showAsAction="always" />
-      
+         	 android:showAsAction="never" />
+
        <item android:id="@+id/action_Notifications"
          	 android:title="@string/action_Notifications"
          	 android:icon="@drawable/ic_action_unread"
-         	 android:showAsAction="always" />
+         	 android:showAsAction="never" />
+       
+       <item android:id="@+id/action_Messages"
+         	 android:title="@string/action_Messages"
+         	 android:icon="@drawable/ic_action_unread"
+         	 android:showAsAction="never" />
+       
+       <item android:id="@+id/action_Users"
+         	 android:title="@string/action_users"
+         	 android:icon="@drawable/ic_action_unread"
+         	 android:showAsAction="never" />
        
        <item android:id="@+id/action_settings"
          	 android:title="@string/action_settings"
          	 android:icon="@drawable/ic_action_settings"
-         	 android:showAsAction="ifRoom" />
+         	 android:showAsAction="never" />
        
 </menu>
