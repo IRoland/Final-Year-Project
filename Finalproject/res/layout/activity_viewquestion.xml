@@ -20,15 +20,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     
-
-   <LinearLayout
-        android:id="@+id/linearLayout1"
+   <EditText
+        android:id="@+id/etEditTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
-        android:gravity="center"
-        android:orientation="horizontal" >
+        android:layout_marginTop="10dp"
+        android:hint="Title"
+        android:inputType="textMultiLine" >
+    </EditText>
+       
+    <EditText
+        android:id="@+id/etEditQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:minHeight="100dp"
+        android:gravity="top"
+        android:hint="Question"
+        android:inputType="textMultiLine" >
+    </EditText>
     
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
     
     <Button
         android:id="@+id/btnEdit"
@@ -46,7 +61,7 @@
         android:text="@string/btnDelete"
         android:background="@null"/>
     
-      
       </LinearLayout>
+      
   
 </LinearLayout>

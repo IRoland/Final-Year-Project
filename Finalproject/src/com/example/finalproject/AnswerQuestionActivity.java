@@ -18,6 +18,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -285,6 +288,49 @@ class PostAnswer extends AsyncTask<String, String, String> {
 		new GetAnswers().execute();
 		}
 	
+	}
+
+
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+		
+		MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.main_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
+			
+	}
+	
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle presses on the action bar items
+	    switch (item.getItemId()) {
+	    case R.id.action_home:
+		         Intent home = new Intent(this, ProfileActivity.class);
+		         home.putExtra("Username", Username);
+		         startActivity(home);
+	            	return true;
+	        case R.id.action_friends:
+		         Intent friendsList = new Intent(this, FriendsListActivity.class);
+		         friendsList.putExtra("username", Username);
+		         startActivity(friendsList);
+	            	return true;
+	        case R.id.action_askedQuestions:
+	        	 Intent askedQuestions = new Intent(this, AskedQuestionsActivity.class);
+	        	 askedQuestions.putExtra("username", Username);
+	        	 startActivity(askedQuestions);
+	        		return true;
+	        case R.id.action_Notifications:
+	        	 Intent notifications = new Intent(this, FriendRequestsActivity.class);
+	        	 notifications.putExtra("username", Username);
+	        	 startActivity(notifications);
+	        		return true;
+	        case R.id.action_settings:
+	        	 Intent settings = new Intent(this, SettingsActivity.class);
+	        	 startActivity(settings);
+	        		return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
 	}
 
 

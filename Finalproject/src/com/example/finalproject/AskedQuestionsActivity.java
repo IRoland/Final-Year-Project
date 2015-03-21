@@ -14,6 +14,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -48,12 +51,8 @@ public class AskedQuestionsActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_askedquestions);
 		
-		
 		lvAskedQuestions = (ListView) findViewById(R.id.lvAskedQuestion);
-		
-		//Run the class
-		new AskedQuestions().execute();
-		
+
 		//Username
 		Username = getIntent().getExtras().getString("username");
 		
@@ -78,12 +77,14 @@ private void viewClickedQuestion() {
 					long id) {
 				
 				Question clickedQuestion = askedQuestions.get(position);		
-
+				
+				
 				Intent viewQuestion = new Intent(AskedQuestionsActivity.this, ViewQuestionActivity.class);
  				viewQuestion.putExtra("Title", clickedQuestion.getTitle());
  				viewQuestion.putExtra("Question", clickedQuestion.getDescription());
  				viewQuestion.putExtra("Username", Username);
  				startActivity(viewQuestion);
+ 				
 			}
 			
 			
@@ -118,8 +119,13 @@ private class QuestionArrayAdapter extends ArrayAdapter<Question>{
 			return itemView;
 		}
 	}
-		 		
-	
+
+public void onResume(){
+	super.onResume();
+	askedQuestions.clear();
+	new AskedQuestions().execute();
+}
+
 class AskedQuestions extends AsyncTask<String, String, String> {
 			
 			List<Question> reterievedQuestions = new ArrayList<Question>();
@@ -189,9 +195,51 @@ class AskedQuestions extends AsyncTask<String, String, String> {
 			 askedQuestions.add(question);
 			 
 			 
-		}
+			}
 		
        }
+
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+		
+		MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.main_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
+			
+	}
+	
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle presses on the action bar items
+	    switch (item.getItemId()) {
+	    case R.id.action_home:
+		         Intent home = new Intent(this, ProfileActivity.class);
+		         home.putExtra("Username", Username);
+		         startActivity(home);
+	            	return true;
+	        case R.id.action_friends:
+		         Intent friendsList = new Intent(this, FriendsListActivity.class);
+		         friendsList.putExtra("username", Username);
+		         startActivity(friendsList);
+	            	return true;
+	        case R.id.action_askedQuestions:
+	        	 Intent askedQuestions = new Intent(this, AskedQuestionsActivity.class);
+	        	 askedQuestions.putExtra("username", Username);
+	        	 startActivity(askedQuestions);
+	        		return true;
+	        case R.id.action_Notifications:
+	        	 Intent notifications = new Intent(this, FriendRequestsActivity.class);
+	        	 notifications.putExtra("username", Username);
+	        	 startActivity(notifications);
+	        		return true;
+	        case R.id.action_settings:
+	        	 Intent settings = new Intent(this, SettingsActivity.class);
+	        	 startActivity(settings);
+	        		return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
 	
 	
 	

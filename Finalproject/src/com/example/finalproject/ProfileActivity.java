@@ -41,6 +41,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -78,6 +80,8 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 	//Spinner
 	private Spinner spinner;
 	
+
+	
 	String username = "";
 	String notificationUsernames;
 	
@@ -93,6 +97,7 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
     
     JSONParser jsonParser1 = new JSONParser();
     
+    private Toolbar toolbar;
     //To testing on your device
     //Put your local ip instead,
     
@@ -130,18 +135,11 @@ protected void onCreate(Bundle savedInstanceState) {
 	
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
+
 		
-		//For Clearing all One Time Logins
-	   /*SharedPreferences settings = getSharedPreferences(Constants.LOGIN_INFO,0);
-         SharedPreferences.Editor editor = settings.edit();
-    	 editor.clear();
-		 editor.commit(); */
-	
-		//For clearing a specific pref
-	  /*SharedPreferences settings = getSharedPreferences(Constants.PREFS_NAME,0);
-        SharedPreferences.Editor editor = settings.edit();
-    	editor.remove("hasLoggedIn");
-		editor.commit(); */
+	//	toolbar    = (Toolbar)  findViewById(R.id.toolbar);
+	//	setSupportActionBar(toolbar);
+		
 
 		// setup input fields
 		question   = (EditText) findViewById(R.id.etQuestion);
@@ -199,10 +197,8 @@ protected void onCreate(Bundle savedInstanceState) {
         roundedImage = new RoundImage(bm);
         profilepic.setImageDrawable(roundedImage);
         
-
-		
 	}
-	
+
 	//When a certain button is pressed 
 @Override
 public void onClick(View v) {
@@ -219,7 +215,6 @@ public void onClick(View v) {
 				}
 	}
 	
-
 @Override
 public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
 		 // On selecting a spinner item
@@ -290,8 +285,13 @@ class PostPublic extends AsyncTask<String, String, String> {
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-			question.setText(null);
-        	title.setText(null);
+		
+        if (result != null){
+               Toast.makeText(ProfileActivity.this, result, Toast.LENGTH_LONG).show();
+              }else {
+            	  question.setText(null);
+            	  title.setText(null);
+              }
 			
 		}
 
@@ -505,7 +505,6 @@ public void createGameInviteNotification(int notiID) {
 		// User new Intent() to not start an intent on pending intent.
 	    Intent viewIntent = new Intent(this, FriendRequestsActivity.class);
 	    viewIntent.putExtra("username", username);
-	    	
 	    PendingIntent vIntent = PendingIntent.getActivity(this, 0, viewIntent, 0);
 
 	    // Build notification
