@@ -47,7 +47,7 @@ public class AnswerQuestionActivity extends Activity{
 	
 	private TextView tvQuestionTitleSection, tvQuestionSection,tvUserName,tvDateAsked;
 	
-	private ArrayAdapter<Answer> QuestionAnswersAdapter ;  
+	private ArrayAdapter<Answer> QuestionAnswersAdapter;  
 	
 	
 	 // JSON element ids from repsonse of php script:
@@ -323,6 +323,11 @@ public boolean onOptionsItemSelected(MenuItem item) {
 	        	 Intent notifications = new Intent(this, FriendRequestsActivity.class);
 	        	 notifications.putExtra("username", Username);
 	        	 startActivity(notifications);
+	        		return true;
+	        case R.id.action_Users:
+	        	 Intent users = new Intent(AnswerQuestionActivity.this, SearchForUsersActivity.class);
+	        	 users.putExtra("username", Username);
+	        	 startActivity(users);
 	        		return true;
 	        case R.id.action_settings:
 	        	 Intent settings = new Intent(this, SettingsActivity.class);

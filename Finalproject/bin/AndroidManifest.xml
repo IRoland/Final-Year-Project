@@ -82,6 +82,11 @@
             android:name="com.example.finalproject.MainActivity"
             android:label="@string/app_name" >
         </activity>
+        
+        <activity
+            android:name="com.example.finalproject.SearchForUsersActivity"
+            android:label="@string/app_name" >
+        </activity>
   
     </application>
 

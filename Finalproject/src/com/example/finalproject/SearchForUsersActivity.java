@@ -9,32 +9,34 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ActionBar;
+import com.example.finalproject.AnswerQuestionActivity.PostAnswer;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class FriendsListActivity extends Activity {
+public class SearchForUsersActivity extends Activity implements OnQueryTextListener{
 	
 	String Username;
-	
-	private Toolbar toolbar;
 
+	private SearchView mSearchView;
 	// JSON element ids from repsonse of php script:
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_MESSAGE = "message";
@@ -43,53 +45,63 @@ public class FriendsListActivity extends Activity {
     //JSON parser class
     JSONParser jsonParser = new JSONParser();
     
-    private static final String GetFriendsURL = "http://192.168.56.1:1234/FinalYearApp/friendsList.php";
+    private static final String GetUsersURL = "http://192.168.56.1:1234/FinalYearApp/UsersList.php";
     
-    List<Friend> friendsList = new ArrayList<Friend>();
+    List<Friend> UsersList = new ArrayList<Friend>();
     
-    private ListView lvFriendsList;
+    private ListView lvUsersList;
+    
+    private SearchView svUsers;
+    
+    ArrayAdapter<Friend> UsersListAdapter;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_friendslist);
+		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+		setContentView(R.layout.activity_searchusers);
 		
 		
-		lvFriendsList = (ListView) findViewById(R.id.lvFriendsList);
+		lvUsersList = (ListView) findViewById(R.id.lvUsersList);
+		
+		svUsers		 = (SearchView) findViewById(R.id.sVUsers);
 	
-//		toolbar    = (Toolbar)  findViewById(R.id.toolbar);
-//		setSupportActionBar(toolbar);
-		
 		//Run the class
-		new FriendsList().execute();
+		//new UsersList().execute();
 				
 		//Username
 		Username = getIntent().getExtras().getString("username");
 				
-		ArrayAdapter<Friend> FriendsListAdapter = new FriendsArrayAdapter();
+		UsersListAdapter = new UsersListAdapter();
 				
-		ListView FriendsList = (ListView) findViewById(R.id.lvFriendsList);
+		ListView UsersList = (ListView) findViewById(R.id.lvUsersList);
 		
-		FriendsList.setAdapter(FriendsListAdapter);
+		UsersList.setAdapter(UsersListAdapter);
 				
 		viewUserProfile();
-
+		
+		svUsers.setOnQueryTextListener(this);
+		
 	}
 
 
+public boolean onQueryTextSubmit(String query){
+	new UsersList().execute(query);
+	return false;
+}
 private void viewUserProfile() {
 
 	
-	lvFriendsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+	lvUsersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View viewClicked, int position,
 				long id) {
 			
-			Friend clickedFriend = friendsList.get(position);		
+			Friend clickedFriend = UsersList.get(position);		
 
-			Intent viewUserProfrile = new Intent(FriendsListActivity.this, ViewUserProfileActivity.class);
+			Intent viewUserProfrile = new Intent(SearchForUsersActivity.this, ViewUserProfileActivity.class);
 				viewUserProfrile.putExtra("firstName", clickedFriend.getFirstName());
 				viewUserProfrile.putExtra("secondName", clickedFriend.getSecondName());
 				viewUserProfrile.putExtra("clickedUsername", clickedFriend.getUsername());
@@ -102,14 +114,10 @@ private void viewUserProfile() {
 	});
 	}
 
+private class UsersListAdapter extends ArrayAdapter<Friend>{
 
-
-private class FriendsArrayAdapter extends ArrayAdapter<Friend>{
-
-	
-		
-		public FriendsArrayAdapter(){
-			super(FriendsListActivity.this, R.layout.listviewfriends, friendsList);
+		public UsersListAdapter(){
+			super(SearchForUsersActivity.this, R.layout.listviewfriends, UsersList);
 		}
 
 		@Override
@@ -120,25 +128,25 @@ private class FriendsArrayAdapter extends ArrayAdapter<Friend>{
 				itemView = getLayoutInflater().inflate(R.layout.listviewfriends, parent, false);
 			}
 			
-			Friend currentFriend = friendsList.get(position);		
+			Friend currentUser = UsersList.get(position);		
 			
 			ImageView icon = (ImageView) itemView.findViewById(R.id.ivProfileIcon);
-			icon.setImageResource(currentFriend.getIcon());
+			icon.setImageResource(currentUser.getIcon());
 			
 			TextView name = (TextView) itemView.findViewById(R.id.tvName);
-			String fullName = currentFriend.getFirstName() + " " + currentFriend.getSecondName();
+			String fullName = currentUser.getFirstName() + " " + currentUser.getSecondName();
 			name.setText(fullName);
 			
 			TextView status = (TextView) itemView.findViewById(R.id.tvUserStatus);
-			 status.setText(currentFriend.getUsername());
+			 status.setText(currentUser.getUsername());
 			
 			return itemView;
 		}
 	}
 
-class FriendsList extends AsyncTask<String, String, String> {
+class UsersList extends AsyncTask<String, String, String> {
 	
-	List<Friend> reterievedFriends = new ArrayList<Friend>();
+	List<Friend> reterievedUsers = new ArrayList<Friend>();
 
 protected String doInBackground(String... args) {
 	
@@ -152,15 +160,15 @@ protected String doInBackground(String... args) {
     try {
         // Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("Username", Username));
-        
+        params.add(new BasicNameValuePair("Username", args[0]));
+     
         Log.d("request!", "starting");
         // getting product details by making HTTP requests
         JSONObject json = jsonParser.makeHttpRequest(
-        		GetFriendsURL, "POST", params);
+        		GetUsersURL, "POST", params);
 
         // check your log for json response
-        Log.d("Reterieving Friends", json.toString());
+        Log.d("Reterieving Users", json.toString());
 
         //Json tags
         success = json.getInt(TAG_SUCCESS);
@@ -177,14 +185,14 @@ protected String doInBackground(String... args) {
             firstNames  = json_data.getString("first_names");
             secondNames = json_data.getString("second_names");
             usernames   = json_data.getString("usernames");
-            reterievedFriends.add(new Friend(R.drawable.ic_action_person,firstNames,secondNames,usernames));
+            reterievedUsers.add(new Friend(R.drawable.ic_action_person,firstNames,secondNames,usernames));
         }
 
         if (success == 1) {
-        	Log.d("Friends Reterieved", json.toString());
+
         	return json.getString(TAG_MESSAGE);
         }else{
-        	Log.d("Failed!", json.getString(TAG_MESSAGE));
+
         	return json.getString(TAG_MESSAGE);
         	
         }
@@ -200,10 +208,15 @@ protected String doInBackground(String... args) {
 protected void onPostExecute(String result) {
 	// TODO Auto-generated method stub
 	super.onPostExecute(result);
-	for(Friend friend: reterievedFriends)
-	 friendsList.add(friend);
-	 
-	 
+	UsersList.clear();
+	if(result == null){
+		Toast.makeText(SearchForUsersActivity.this, "Sorry User not found", Toast.LENGTH_SHORT).show();
+		UsersListAdapter.notifyDataSetChanged();
+	}else{
+		for(Friend friend: reterievedUsers)
+			UsersList.add(friend);
+		UsersListAdapter.notifyDataSetChanged();
+	}
 			}
 		}
 
@@ -241,7 +254,7 @@ public boolean onOptionsItemSelected(MenuItem item) {
 	        	 startActivity(notifications);
 	        		return true;
 	        case R.id.action_Users:
-	        	 Intent users = new Intent(FriendsListActivity.this, SearchForUsersActivity.class);
+	        	 Intent users = new Intent(SearchForUsersActivity.this, SearchForUsersActivity.class);
 	        	 users.putExtra("username", Username);
 	        	 startActivity(users);
 	        		return true;
@@ -254,5 +267,11 @@ public boolean onOptionsItemSelected(MenuItem item) {
 	    }
 	}
 
+
+@Override
+public boolean onQueryTextChange(String newText) {
+
+	return false;
+}
 
 }

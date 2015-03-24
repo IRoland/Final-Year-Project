@@ -111,6 +111,11 @@ public boolean onOptionsItemSelected(MenuItem item) {
 	        	 notifications.putExtra("username", username);
 	        	 startActivity(notifications);
 	        		return true;
+	        case R.id.action_Users:
+	        	 Intent users = new Intent(SettingsActivity.this, SearchForUsersActivity.class);
+	        	 users.putExtra("username", username);
+	        	 startActivity(users);
+	        		return true;
 	        case R.id.action_settings:
 	        	 Intent settings = new Intent(this, SettingsActivity.class);
 	        	 startActivity(settings);

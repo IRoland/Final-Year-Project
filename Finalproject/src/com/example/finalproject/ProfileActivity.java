@@ -80,8 +80,6 @@ public class ProfileActivity extends Activity implements OnClickListener, OnItem
 	//Spinner
 	private Spinner spinner;
 	
-
-	
 	String username = "";
 	String notificationUsernames;
 	
@@ -464,6 +462,11 @@ public boolean onOptionsItemSelected(MenuItem item) {
 	        	 Intent notifications = new Intent(ProfileActivity.this, FriendRequestsActivity.class);
 	        	 notifications.putExtra("username", username);
 	        	 startActivity(notifications);
+	        		return true;
+	        case R.id.action_Users:
+	        	 Intent users = new Intent(ProfileActivity.this, SearchForUsersActivity.class);
+	        	 users.putExtra("username", username);
+	        	 startActivity(users);
 	        		return true;
 	        case R.id.action_settings:
 	        	 Intent settings = new Intent(this, SettingsActivity.class);

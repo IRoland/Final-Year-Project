@@ -11,6 +11,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -219,6 +221,10 @@ public void askQuestion(int index,int randomizer){
 		countDownTimer.cancel();
 		//QuizOver Start new Intent Finish this one
 		Toast.makeText(this, "GameOver", Toast.LENGTH_LONG).show();
+		Intent home = new Intent(QuizActivity.this, ProfileActivity.class);
+        home.putExtra("Username", Username);
+        startActivity(home);
+        finish();
 		
 	}
 	
@@ -230,7 +236,9 @@ public void getIndexAndRandomizer(){
     int randomNum = rand.nextInt((max - min) + 1) + min;
 	askQuestion(Question_No, randomNum);
 	Question_No++;
+if(Question_No <= QuizQuestions.size()){
 	countDownTimer.start();
+	}
 }
 
 // CountDownTimer class

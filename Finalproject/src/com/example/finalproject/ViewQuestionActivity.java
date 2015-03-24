@@ -305,6 +305,11 @@ class deleteQuestion extends AsyncTask<String, String, String> {
 	        	 notifications.putExtra("username", username);
 	        	 startActivity(notifications);
 	        		return true;
+	        case R.id.action_Users:
+	        	 Intent users = new Intent(ViewQuestionActivity.this, SearchForUsersActivity.class);
+	        	 users.putExtra("username", username);
+	        	 startActivity(users);
+	        		return true;
 	        case R.id.action_settings:
 	        	 Intent settings = new Intent(this, SettingsActivity.class);
 	        	 startActivity(settings);

@@ -4,14 +4,22 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-
-
+     <TextView
+        android:id="@+id/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FRIENDS"
+        android:textSize="18sp"
+        android:layout_gravity="center" />
+     
+     
     <ListView
         android:id="@+id/lvFriendsList"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
+
     </ListView>
-    
-    
+
+   
 
 </LinearLayout>
