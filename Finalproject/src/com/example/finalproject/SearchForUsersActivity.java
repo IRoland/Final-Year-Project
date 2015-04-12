@@ -96,20 +96,19 @@ private void viewUserProfile() {
 	lvUsersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 		@Override
-		public void onItemClick(AdapterView<?> parent, View viewClicked, int position,
-				long id) {
+		public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
 			
 			Friend clickedFriend = UsersList.get(position);		
 
 			Intent viewUserProfrile = new Intent(SearchForUsersActivity.this, ViewUserProfileActivity.class);
-				viewUserProfrile.putExtra("firstName", clickedFriend.getFirstName());
-				viewUserProfrile.putExtra("secondName", clickedFriend.getSecondName());
-				viewUserProfrile.putExtra("clickedUsername", clickedFriend.getUsername());
-				viewUserProfrile.putExtra("Username", Username);
-				startActivity(viewUserProfrile);
-
+			viewUserProfrile.putExtra("firstName", clickedFriend.getFirstName());
+			viewUserProfrile.putExtra("secondName", clickedFriend.getSecondName());
+			viewUserProfrile.putExtra("clickedUsername", clickedFriend.getUsername());
+			viewUserProfrile.putExtra("Username", Username);
+			startActivity(viewUserProfrile);
+						
 		}
-		
+
 		
 	});
 	}
@@ -266,7 +265,6 @@ public boolean onOptionsItemSelected(MenuItem item) {
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
-
 
 @Override
 public boolean onQueryTextChange(String newText) {

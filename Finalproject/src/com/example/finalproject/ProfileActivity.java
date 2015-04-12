@@ -191,9 +191,9 @@ protected void onCreate(Bundle savedInstanceState) {
 	    spinner.setAdapter(adapter);
 	    
 	    //Takes a resource from drawable and makes it round 
-	    Bitmap bm = BitmapFactory.decodeResource(getResources(),R.drawable.profilepic_icon);
-        roundedImage = new RoundImage(bm);
-        profilepic.setImageDrawable(roundedImage);
+	    //  Bitmap bm = BitmapFactory.decodeResource(getResources(),R.drawable.profilepic_icon);
+        //  roundedImage = new RoundImage(bm);
+        profilepic.setBackgroundResource(R.drawable.profilepic_icon);
         
 	}
 
@@ -575,7 +575,6 @@ class CheckForNotifications extends AsyncTask<String, String, String> {
                 	createGameInviteNotification(results2.length()); 	
                 }
                 else{
-                	Log.d("Failed!", json.getString(TAG_MESSAGE));
                 	return gameInvite.getString(TAG_MESSAGE);
                 }
 

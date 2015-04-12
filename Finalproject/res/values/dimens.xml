@@ -5,5 +5,6 @@
     <dimen name="activity_vertical_margin">40dp</dimen>
     
     <dimen name="activity_Top_margin">10dp</dimen>
+    <dimen name="padding_edge">16dp</dimen>
 
 </resources>

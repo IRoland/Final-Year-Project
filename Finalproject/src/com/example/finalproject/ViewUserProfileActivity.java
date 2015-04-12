@@ -9,6 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.example.finalproject.FriendRequestsActivity.FriendRequestsList;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -185,6 +187,16 @@ public void onClick(View v) {
 				 new UnFriend().execute();
 				 btnAdd.setText("Add");
 			 }
+			 else if(friendButtonText.equals("Pending")){
+				 new DeleteFriendRequest().execute();
+				 btnAdd.setText("Add");
+			 }
+			 else if(friendButtonText.equals("Respond")){
+				 Intent notifications = new Intent(this, FriendRequestsActivity.class);
+	        	 notifications.putExtra("username", currentUsername);
+	        	 startActivity(notifications);
+	        	 finish();
+			 }
 			break;
 		case R.id.btnBlockUser:
 			//	new BlockUser().execute();
@@ -307,10 +319,50 @@ protected void onPostExecute(Integer result) {
 	Toast.makeText(ViewUserProfileActivity.this, "Pending Request", Toast.LENGTH_LONG).show();
 	pendingFriendRequest();
 	}
+	else if(result == 3){
+	Toast.makeText(ViewUserProfileActivity.this, "Veiw Request", Toast.LENGTH_LONG).show();
+	respondFriendRequest();
+	}
 	else{
-	Toast.makeText(ViewUserProfileActivity.this, "Fuck all Found", Toast.LENGTH_LONG).show();	
+	Toast.makeText(ViewUserProfileActivity.this, "Nothing Found", Toast.LENGTH_LONG).show();	
 	}
     //changeBtn(result);
+	
+		}
+
+	}
+
+class DeleteFriendRequest extends AsyncTask<String, String, String> {
+
+protected String doInBackground(String... args) {
+	
+
+    try {
+        // Building Parameters
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("username", currentUsername));
+        params.add(new BasicNameValuePair("friendusername", clickedUsername));
+        
+        Log.d("request!", "starting");
+        // getting product details by making HTTP requests
+        JSONObject json = jsonParser.makeHttpRequest(
+        		DELETEFRIEND_URL, "POST", params);
+
+      
+        return json.getString(TAG_MESSAGE);
+   
+        
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
+
+	return null;
+		}
+
+@Override
+protected void onPostExecute(String result) {
+	super.onPostExecute(result);
+	
 	
 		}
 
@@ -410,6 +462,7 @@ class ChallengeUser extends AsyncTask<String, String, String> {
 
 class getInviteResponse extends AsyncTask<String, String, Integer> {
 
+
 	int success;
 	String message;
 
@@ -488,6 +541,10 @@ public void changeBtn(int x){
 
 public void pendingFriendRequest(){
 	btnAdd.setText("Pending");
+}
+
+public void respondFriendRequest(){
+	btnAdd.setText("Respond");
 }
 
 @Override

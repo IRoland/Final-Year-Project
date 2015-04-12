@@ -1589,6 +1589,7 @@ containing a value of this type.
         public static final int dialog_fixed_width_minor=0x7f07000d;
         public static final int disabled_alpha_material_dark=0x7f070001;
         public static final int disabled_alpha_material_light=0x7f070000;
+        public static final int padding_edge=0x7f07002e;
     }
     public static final class drawable {
         public static final int abc_ab_share_pack_holo_dark=0x7f020000;
@@ -1630,29 +1631,30 @@ containing a value of this type.
         public static final int abc_list_selector_disabled_holo_light=0x7f020024;
         public static final int abc_list_selector_holo_dark=0x7f020025;
         public static final int abc_list_selector_holo_light=0x7f020026;
-        public static final int abc_menu_hardkey_panel_mtrl_mult=0x7f020027;
-        public static final int abc_popup_background_mtrl_mult=0x7f020028;
-        public static final int abc_spinner_mtrl_am_alpha=0x7f020029;
-        public static final int abc_switch_thumb_material=0x7f02002a;
-        public static final int abc_switch_track_mtrl_alpha=0x7f02002b;
-        public static final int abc_tab_indicator_material=0x7f02002c;
-        public static final int abc_tab_indicator_mtrl_alpha=0x7f02002d;
-        public static final int abc_textfield_activated_mtrl_alpha=0x7f02002e;
-        public static final int abc_textfield_default_mtrl_alpha=0x7f02002f;
-        public static final int abc_textfield_search_activated_mtrl_alpha=0x7f020030;
-        public static final int abc_textfield_search_default_mtrl_alpha=0x7f020031;
-        public static final int abc_textfield_search_material=0x7f020032;
-        public static final int english_icon=0x7f020033;
-        public static final int history_icon=0x7f020034;
-        public static final int ic_action_email=0x7f020035;
-        public static final int ic_action_new_event=0x7f020036;
-        public static final int ic_action_overflow=0x7f020037;
-        public static final int ic_action_person=0x7f020038;
-        public static final int ic_action_settings=0x7f020039;
-        public static final int ic_action_unread=0x7f02003a;
-        public static final int ic_launcher=0x7f02003b;
-        public static final int maths_icon=0x7f02003c;
-        public static final int profilepic_icon=0x7f02003d;
+        public static final int abc_menu_dropdown_panel_holo_light=0x7f020027;
+        public static final int abc_menu_hardkey_panel_mtrl_mult=0x7f020028;
+        public static final int abc_popup_background_mtrl_mult=0x7f020029;
+        public static final int abc_spinner_mtrl_am_alpha=0x7f02002a;
+        public static final int abc_switch_thumb_material=0x7f02002b;
+        public static final int abc_switch_track_mtrl_alpha=0x7f02002c;
+        public static final int abc_tab_indicator_material=0x7f02002d;
+        public static final int abc_tab_indicator_mtrl_alpha=0x7f02002e;
+        public static final int abc_textfield_activated_mtrl_alpha=0x7f02002f;
+        public static final int abc_textfield_default_mtrl_alpha=0x7f020030;
+        public static final int abc_textfield_search_activated_mtrl_alpha=0x7f020031;
+        public static final int abc_textfield_search_default_mtrl_alpha=0x7f020032;
+        public static final int abc_textfield_search_material=0x7f020033;
+        public static final int english_icon=0x7f020034;
+        public static final int history_icon=0x7f020035;
+        public static final int ic_action_email=0x7f020036;
+        public static final int ic_action_new_event=0x7f020037;
+        public static final int ic_action_overflow=0x7f020038;
+        public static final int ic_action_person=0x7f020039;
+        public static final int ic_action_settings=0x7f02003a;
+        public static final int ic_action_unread=0x7f02003b;
+        public static final int ic_launcher=0x7f02003c;
+        public static final int maths_icon=0x7f02003d;
+        public static final int profilepic_icon=0x7f02003e;
     }
     public static final class id {
         public static final int Profilebtn=0x7f090057;
@@ -2175,6 +2177,7 @@ containing a value of this type.
     
          */
         public static final int Base_Widget_AppCompat_Toolbar_Button_Navigation=0x7f0b0090;
+        public static final int Card=0x7f0b00ed;
         public static final int Platform_AppCompat=0x7f0b00c9;
         public static final int Platform_AppCompat_Dialog=0x7f0b00cb;
         public static final int Platform_AppCompat_Light=0x7f0b00ca;
