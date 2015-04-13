@@ -115,9 +115,7 @@ protected void onCreate(Bundle savedInstanceState) {
 		viewClickedQuestion();
 		
 		//Round Profile Pic
-		Bitmap bm = BitmapFactory.decodeResource(getResources(),R.drawable.profilepic_icon);
-        roundedImage = new RoundImage(bm);
-		ivUserProfilePic.setImageDrawable(roundedImage);
+		ivUserProfilePic.setBackgroundResource(R.drawable.profilepic_icon);
 	}
 
 private void viewClickedQuestion() {
@@ -379,6 +377,8 @@ protected String doInBackground(String... args) {
 	String message;
 	String qTitle = "";
 	String qDescription = "";
+	int qCategoryIconId;
+	int qCategory = 0;
 
     try {
         // Building Parameters
@@ -407,7 +407,9 @@ protected String doInBackground(String... args) {
             json_data = results.getJSONObject(i);
             qTitle=json_data.getString("titles");
             qDescription=json_data.getString("descriptions");
-            reterievedQuestions.add(new Question(R.drawable.english_icon,qTitle,qDescription));
+            qCategory=json_data.getInt("category");
+            qCategoryIconId = Utils.getDrawableFor(qCategory);
+            reterievedQuestions.add(new Question(qCategoryIconId,qTitle,qDescription));
         }
         	return json.getString(TAG_MESSAGE);
  
@@ -565,6 +567,11 @@ public boolean onOptionsItemSelected(MenuItem item) {
 		         home.putExtra("Username", currentUsername);
 		         startActivity(home);
 	            	return true;
+		    case R.id.action_allQuestions:
+	    		Intent allquestions = new Intent(ViewUserProfileActivity.this, AllQuestionsActivity.class);
+	    		allquestions.putExtra("username", currentUsername);
+	    		startActivity(allquestions);
+	    			return true;
 	        case R.id.action_friends:
 		         Intent friendsList = new Intent(this, FriendsListActivity.class);
 		         friendsList.putExtra("username", currentUsername);

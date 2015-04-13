@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     
-    <item android:id="@+id/action_home"
+    
+       <item android:id="@+id/action_allQuestions"
+         	 android:title="@string/action_allQuestions"
+         	 android:icon="@drawable/ic_action_email"
+         	 android:showAsAction="always" />
+    
+       <item android:id="@+id/action_home"
          	 android:title="@string/action_home"
          	 android:showAsAction="never" />
 
-    <item android:id="@+id/action_askedQuestions"
+       <item android:id="@+id/action_askedQuestions"
          	 android:title="@string/action_askedQuestions"
          	 android:icon="@drawable/ic_action_email"
          	 android:showAsAction="never" />

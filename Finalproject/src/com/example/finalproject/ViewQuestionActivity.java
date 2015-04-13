@@ -290,6 +290,11 @@ class deleteQuestion extends AsyncTask<String, String, String> {
 		         home.putExtra("Username", username);
 		         startActivity(home);
 	            	return true;
+	    	case R.id.action_allQuestions:
+	    		Intent allquestions = new Intent(ViewQuestionActivity.this, AllQuestionsActivity.class);
+	    		allquestions.putExtra("username", username);
+	    		startActivity(allquestions);
+	    			return true;
 	        case R.id.action_friends:
 		         Intent friendsList = new Intent(this, FriendsListActivity.class);
 		         friendsList.putExtra("username", username);

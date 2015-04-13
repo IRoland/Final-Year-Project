@@ -49,6 +49,7 @@
     </string-array>
      <string name="action_home">Home</string>
      <string name="action_askedQuestions">Questions</string>
+     <string name="action_allQuestions">All Questions</string>
      <string name="action_friends">Friends</string>
      <string name="action_Notifications">Notifications</string>
      <string name="action_Messages">Messages</string>

@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -137,6 +138,9 @@ class AskedQuestions extends AsyncTask<String, String, String> {
 			String message;
 			String qTitle = "";
 			String qDescription = "";
+			int qCategoryIconId;
+			int qCategory = 0;
+			
 
             try {
                 // Building Parameters
@@ -165,7 +169,10 @@ class AskedQuestions extends AsyncTask<String, String, String> {
                     json_data = results.getJSONObject(i);
                     qTitle=json_data.getString("titles");
                     qDescription=json_data.getString("descriptions");
-                    reterievedQuestions.add(new Question(R.drawable.english_icon,qTitle,qDescription));
+                    qCategory=json_data.getInt("category");
+                    qCategoryIconId = Utils.getDrawableFor(qCategory);
+                 
+                    reterievedQuestions.add(new Question(qCategoryIconId,qTitle,qDescription));
                 }
                 
                 
@@ -217,6 +224,11 @@ public boolean onOptionsItemSelected(MenuItem item) {
 		         home.putExtra("Username", Username);
 		         startActivity(home);
 	            	return true;
+	    	case R.id.action_allQuestions:
+         		Intent allquestions = new Intent(AskedQuestionsActivity.this, AllQuestionsActivity.class);
+         		allquestions.putExtra("username", Username);
+         		startActivity(allquestions);
+       				return true;
 	        case R.id.action_friends:
 		         Intent friendsList = new Intent(this, FriendsListActivity.class);
 		         friendsList.putExtra("username", Username);

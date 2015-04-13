@@ -237,6 +237,11 @@ public boolean onOptionsItemSelected(MenuItem item) {
 		         home.putExtra("Username", Username);
 		         startActivity(home);
 	            	return true;
+	    	case R.id.action_allQuestions:
+	    		Intent allquestions = new Intent(SearchForUsersActivity.this, AllQuestionsActivity.class);
+	    		allquestions.putExtra("username", Username);
+	    		startActivity(allquestions);
+	    			return true;
 	        case R.id.action_friends:
 		         Intent friendsList = new Intent(this, FriendsListActivity.class);
 		         friendsList.putExtra("username", Username);
